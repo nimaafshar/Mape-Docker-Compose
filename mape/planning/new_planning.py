@@ -1,8 +1,9 @@
 from analysis.problem import solve_optimization_problem,AdaptationProblem
 from planning.planning import Planning
+from analysis.new_analysis import EASEAnalysis
 from monitoring.new_monitoring import EASEMonitoring
 
-class OptimizationPalnning(Planning):
+class OptimizationPlanning(Planning):
     H = 10
     #in miliseconds
     response_time_upper_bound = 3000
@@ -19,7 +20,7 @@ class OptimizationPalnning(Planning):
     data_transfer_cost = 0.0001
     container_cost = 0.0002
 
-    def __init__(self, analysis):
+    def __init__(self, analysis:EASEAnalysis):
         # setting constants
         super().__init__()
         self.nb_containers = 0
