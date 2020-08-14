@@ -1,0 +1,12 @@
+version: '2.2'
+services: 
+    mape:
+        image: mape_system:4
+        env_file:
+            - .env
+        volumes: 
+            - ./log:/mape/log
+    picalculator:
+        image: picalculator
+        ports:
+          - 5000:5000
