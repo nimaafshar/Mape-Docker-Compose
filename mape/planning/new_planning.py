@@ -1,4 +1,4 @@
-from analysis.problem import solve_optimization_problem,AdaptationProblem
+from analysis.problem import solve_optimization_problem,AdaptationProblem,choose_on_pf
 from planning.planning import Planning
 from analysis.new_analysis import EASEAnalysis
 from monitoring.new_monitoring import EASEMonitoring
@@ -6,19 +6,14 @@ from monitoring.new_monitoring import EASEMonitoring
 class OptimizationPlanning(Planning):
     H = 10
     #in miliseconds
-    response_time_upper_bound = 3000
+    response_time_upper_bound = 200
     response_time_lower_bound = 1
     #in request per seconds
-    container_capacity_lower_bound = 1
-    container_capacity_upper_bound = 75
-    #in dollars
-    revenue_per_thousand_ads = 100
+    container_capacity_lower_bound = 10
+    container_capacity_upper_bound = 200
     #count
     banner_count_lower_bound = 1
     banner_count_upper_bound = 10
-    #per kilobytes
-    data_transfer_cost = 0.0001
-    container_cost = 0.0002
 
     def __init__(self, analysis:EASEAnalysis):
         # setting constants
@@ -32,11 +27,7 @@ class OptimizationPlanning(Planning):
         # total_net_usage = last_data.get('net_rx') + last_data.get('net_tx')
         problem = AdaptationProblem(
             landa=self.get_arrival_rate(),
-            n=self.get_average_payload(),
-            p_i=self.container_cost,
-            p_n=self.data_transfer_cost,
-            H=self.H,
-            RPM=self.revenue_per_thousand_ads,
+            n=self.get_average_payload(), #you can change KB to bytes
             R=self.get_response_time(),
             gamma_l=self.banner_count_lower_bound,
             gamma_u=self.banner_count_upper_bound,
@@ -47,14 +38,18 @@ class OptimizationPlanning(Planning):
         )
         objectives, variables = solve_optimization_problem(problem)
         print("Analyse results:")
-        print(f"p_s should be {variables[0]}")
-        print(f"W should be {variables[1]}")
-        print(f"gamma should be {variables[2]}")
-        print("in optimal conditions:")
-        print(f"service profit should be {objectives[0]}")
-        print(f"client profit should be {objectives[1]}")
-        print(f"user satisfaction should be {objectives[2]}")
+        if objectives is None or variables is None:
+            print("no optimized answer found for the problem")
+        else:
+            p_s , W , gamma = choose_on_pf(-1*objectives,variables)
+            print("Optimized Results:")
+            print({
+                "p_s":p_s,
+                "W":W,
+                "gamma":gamma
+            })
         # we can also insert results into some sort of database
+        #if you want to use execution step uncomment line below
         # super().notify()
 
     def get_arrival_rate(self):
