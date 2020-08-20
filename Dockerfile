@@ -14,6 +14,6 @@ RUN apt-get update
 RUN apt-get install -y apache2-utils
 RUN apt-get install -y apache2
 
-ENTRYPOINT [ "python3" ]
+ENTRYPOINT [ "python3" ,"-u"]
 
 CMD [ "dockercompose_autoscale.py" ]

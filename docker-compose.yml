@@ -1,7 +1,7 @@
 version: '2.2'
 services: 
     mape:
-        image: mape_system:4
+        image: mape_system:5
         env_file:
             - .env
         volumes: 

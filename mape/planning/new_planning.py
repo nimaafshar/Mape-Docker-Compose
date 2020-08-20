@@ -2,18 +2,19 @@ from analysis.problem import solve_optimization_problem,AdaptationProblem,choose
 from planning.planning import Planning
 from analysis.new_analysis import EASEAnalysis
 from monitoring.new_monitoring import EASEMonitoring
+import os
 
 class OptimizationPlanning(Planning):
     H = 10
     #in miliseconds
-    response_time_upper_bound = 200
-    response_time_lower_bound = 1
+    response_time_upper_bound = os.environ.get("RESPONSE_TIME_UPPER_BOUND",2500)
+    response_time_lower_bound = os.environ.get("RESPONSE_TIME_LOWER_BOUND",10)
     #in request per seconds
-    container_capacity_lower_bound = 10
-    container_capacity_upper_bound = 200
+    container_capacity_lower_bound = os.environ.get("CONTAINER_CAP_LOWER_BOUND",10)
+    container_capacity_upper_bound = os.environ.get("CONTAINER_CAP_UPPER_BOUND",200)
     #count
-    banner_count_lower_bound = 1
-    banner_count_upper_bound = 10
+    banner_count_lower_bound = os.environ.get("BANNER_LOWER_BOUND",1)
+    banner_count_upper_bound = os.environ.get("BANNER_UPPER_BOUND",10)
 
     def __init__(self, analysis:EASEAnalysis):
         # setting constants

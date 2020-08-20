@@ -42,6 +42,7 @@ class EASEMonitoring(Monitoring):
         digits=self.get_digits_count()
         request_number,concurent_users=self.get_request_properties()
         url="http://"+self.host+":"+self.port+"/?d="+str(digits)
+        print("sending "+str(request_number)+" requests by "+str(concurent_users)+" concurrent users")
         #using an apache benchmark subprocess to 
         result = subprocess.run(['ab', '-n',str(request_number),'-c',str(concurent_users),url], stdout=subprocess.PIPE)
         self.raw_results = result.stdout.decode('utf-8')
