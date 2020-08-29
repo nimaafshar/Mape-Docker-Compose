@@ -8,6 +8,8 @@ import docker
 from monitoring.new_monitoring import EASEMonitoring
 from analysis.new_analysis import EASEAnalysis
 from planning.new_planning import OptimizationPlanning
+
+
 # from execution.docker_execution import DockerExecution
 # from planning.threshold_planning import DockerPlanning
 
@@ -21,8 +23,8 @@ def main():
     URI = os.getenv("URI")
     mongo_client = pymongo.MongoClient(URI)
     monitoring = EASEMonitoring(mongo_client, docker.from_env())
-    analysis = EASEAnalysis(mongo_client,monitoring)
-    planning = OptimizationPlanning(analysis)
+    analysis = EASEAnalysis(mongo_client, monitoring)
+    planning = OptimizationPlanning(analysis, mongo_client)
     # execution = DockerExecution(planning)
     analysis.attach(planning)
     # planning.attach(execution)

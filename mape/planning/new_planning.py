@@ -1,26 +1,28 @@
-from analysis.problem import solve_optimization_problem,AdaptationProblem,choose_on_pf
+from analysis.problem import solve_optimization_problem, AdaptationProblem, choose_on_pf
 from planning.planning import Planning
 from analysis.new_analysis import EASEAnalysis
 from monitoring.new_monitoring import EASEMonitoring
 import os
 
+
 class OptimizationPlanning(Planning):
     H = 10
-    #in miliseconds
-    response_time_upper_bound = os.environ.get("RESPONSE_TIME_UPPER_BOUND",2500)
-    response_time_lower_bound = os.environ.get("RESPONSE_TIME_LOWER_BOUND",10)
-    #in request per seconds
-    container_capacity_lower_bound = os.environ.get("CONTAINER_CAP_LOWER_BOUND",10)
-    container_capacity_upper_bound = os.environ.get("CONTAINER_CAP_UPPER_BOUND",200)
-    #count
-    banner_count_lower_bound = os.environ.get("BANNER_LOWER_BOUND",1)
-    banner_count_upper_bound = os.environ.get("BANNER_UPPER_BOUND",10)
+    # in miliseconds
+    response_time_upper_bound = os.environ.get("RESPONSE_TIME_UPPER_BOUND", 2500)
+    response_time_lower_bound = os.environ.get("RESPONSE_TIME_LOWER_BOUND", 10)
+    # in request per seconds
+    container_capacity_lower_bound = os.environ.get("CONTAINER_CAP_LOWER_BOUND", 10)
+    container_capacity_upper_bound = os.environ.get("CONTAINER_CAP_UPPER_BOUND", 200)
+    # count
+    banner_count_lower_bound = os.environ.get("BANNER_LOWER_BOUND", 1)
+    banner_count_upper_bound = os.environ.get("BANNER_UPPER_BOUND", 10)
 
-    def __init__(self, analysis:EASEAnalysis):
+    def __init__(self, analysis: EASEAnalysis, mongodb_client):
         # setting constants
         super().__init__()
         self.nb_containers = 0
         self.analysis = analysis
+        self.mongodb_client = mongodb_client
 
     def update(self):
         # last_data = super().get_last_data()
@@ -28,7 +30,7 @@ class OptimizationPlanning(Planning):
         # total_net_usage = last_data.get('net_rx') + last_data.get('net_tx')
         problem = AdaptationProblem(
             landa=self.get_arrival_rate(),
-            n=self.get_average_payload(), #you can change KB to bytes
+            n=self.get_average_payload(),  # you can change KB to bytes
             R=self.get_response_time(),
             gamma_l=self.banner_count_lower_bound,
             gamma_u=self.banner_count_upper_bound,
@@ -42,15 +44,28 @@ class OptimizationPlanning(Planning):
         if objectives is None or variables is None:
             print("no optimized answer found for the problem")
         else:
-            p_s , W , gamma = choose_on_pf(-1*objectives,variables)
+            p_s, W, gamma = choose_on_pf(-1 * objectives, variables)
+            # we can also insert results into some sort of database
+            requests , con_users = self.analysis.monitoring.get_request_properties()
+            data = {
+                "requests":requests,
+                "concurrent_users":con_users,
+                "arrival_rate": self.analysis.arrival_rate,
+                "response_time": self.analysis.response_time,
+                "data_payload": self.analysis.data_payload,
+                "predicted_p_s": p_s,
+                "predicted_W": W,
+                "predicted_gamma": gamma
+            }
+            super().database_insertion(data)
             print("Optimized Results:")
             print({
-                "p_s":p_s,
-                "W":W,
-                "gamma":gamma
+                "p_s": p_s,
+                "W": W,
+                "gamma": gamma
             })
-        # we can also insert results into some sort of database
-        #if you want to use execution step uncomment line below
+
+        # if you want to use execution step uncomment line below
         # super().notify()
 
     def get_arrival_rate(self):

@@ -11,6 +11,7 @@ class Monitoring(ABC):
             self.mongodb_client.monitoring.containers.insert_one(data)
         elif col == "power":
             self.mongodb_client.monitoring.power.insert_one(data)
+
     @abstractmethod
     def get_measurements(self):
         pass

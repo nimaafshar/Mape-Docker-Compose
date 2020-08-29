@@ -5,7 +5,7 @@ import re
 
 class EASEAnalysis(Analysis):
 
-    def __init__(self, mongodb_client, monitoring):
+    def __init__(self, mongodb_client, monitoring :EASEMonitoring):
         super().__init__(mongodb_client)
         self.monitoring = monitoring
         self.arrival_rate = None
