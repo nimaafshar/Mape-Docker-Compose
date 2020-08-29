@@ -31,6 +31,7 @@ class EASEMonitoring(Monitoring):
                     raise Exception("Invalid request_property_set.txt format there should be 2 integers in a line")
                 try:
                     requests, concurrent_users = int(splited[0]), int(splited[1])
+                    self.request_property_set.append((requests,concurrent_users))
                 except Exception as e:
                     raise Exception("nvalid request_property_set.txt format it should contain integers")
 

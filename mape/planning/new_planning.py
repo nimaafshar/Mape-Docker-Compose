@@ -19,7 +19,7 @@ class OptimizationPlanning(Planning):
 
     def __init__(self, analysis: EASEAnalysis, mongodb_client):
         # setting constants
-        super().__init__()
+        super().__init__(mongodb_client)
         self.nb_containers = 0
         self.analysis = analysis
         self.mongodb_client = mongodb_client

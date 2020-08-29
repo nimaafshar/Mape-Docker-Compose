@@ -1,12 +1,34 @@
-version: '2.2'
-services: 
-    mape:
-        image: mape_system:latest
-        env_file:
-            - .env
-        volumes: 
-            - ./log:/mape/log
-    picalculator:
-        image: picalculator
-        ports:
-          - 5000:5000
+version: "3"
+services:
+  bb:
+    image: mongo:3-xenial
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb:/data/db:rw
+
+  bbmanager:
+    image: mongo-express
+    links:
+      - bb
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+  mape:
+    image: mape_system:latest
+    env_file:
+      - .env
+    volumes:
+      - ./log:/mape/log
+    links:
+      - bb:mongodb
+  picalculator:
+    image: picalculator
+    ports:
+      - 5000:5000
