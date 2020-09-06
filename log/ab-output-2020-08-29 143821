@@ -1,0 +1,42 @@
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking picalculator (be patient).....done
+
+
+Server Software:        Werkzeug/1.0.1
+Server Hostname:        picalculator
+Server Port:            5000
+
+Document Path:          /?d=684
+Document Length:        686 bytes
+
+Concurrency Level:      5
+Time taken for tests:   0.530 seconds
+Complete requests:      20
+Failed requests:        0
+Total transferred:      16800 bytes
+HTML transferred:       13720 bytes
+Requests per second:    37.73 [#/sec] (mean)
+Time per request:       132.509 [ms] (mean)
+Time per request:       26.502 [ms] (mean, across all concurrent requests)
+Transfer rate:          30.95 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       1
+Processing:    27  118  43.6    125     197
+Waiting:       23  103  38.0    106     167
+Total:         27  119  43.5    125     197
+
+Percentage of the requests served within a certain time (ms)
+  50%    125
+  66%    130
+  75%    133
+  80%    160
+  90%    192
+  95%    197
+  98%    197
+  99%    197
+ 100%    197 (longest request)

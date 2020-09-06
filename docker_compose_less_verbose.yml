@@ -13,7 +13,7 @@ services:
   bbmanager:
     image: mongo-express
     links:
-      - bb
+      - bb:db
     ports:
       - 8081:8081
     environment:
