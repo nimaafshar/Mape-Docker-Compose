@@ -3,6 +3,7 @@ from planning.planning import Planning
 from analysis.new_analysis import EASEAnalysis
 from monitoring.new_monitoring import EASEMonitoring
 import os
+from datetime import datetime
 
 
 class OptimizationPlanning(Planning):
@@ -55,7 +56,8 @@ class OptimizationPlanning(Planning):
                 "data_payload": self.analysis.data_payload,
                 "predicted_p_s": p_s,
                 "predicted_W": W,
-                "predicted_gamma": gamma
+                "predicted_gamma": gamma,
+                "date": datetime.now()
             }
             super().database_insertion(data)
             print("Optimized Results:")
