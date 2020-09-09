@@ -29,43 +29,51 @@ class OptimizationPlanning(Planning):
         # last_data = super().get_last_data()
         # self.nb_containers = last_data.get("nb_containers")
         # total_net_usage = last_data.get('net_rx') + last_data.get('net_tx')
-        problem = AdaptationProblem(
-            landa=self.get_arrival_rate(),
-            n=self.get_average_payload(),  # you can change KB to bytes
-            R=self.get_response_time(),
-            gamma_l=self.banner_count_lower_bound,
-            gamma_u=self.banner_count_upper_bound,
-            R_l=self.response_time_lower_bound,
-            R_u=self.response_time_upper_bound,
-            d_l=self.container_capacity_lower_bound,
-            d_u=self.container_capacity_upper_bound
-        )
-        objectives, variables = solve_optimization_problem(problem)
+        objectives, variables = None,None
+        for i in range(10):
+            problem = AdaptationProblem(
+                landa=self.get_arrival_rate(),
+                n=self.get_average_payload(),  # you can change KB to bytes
+                R=self.get_response_time(),
+                gamma_l=self.banner_count_lower_bound,
+                gamma_u=self.banner_count_upper_bound,
+                R_l=self.response_time_lower_bound,
+                R_u=self.response_time_upper_bound,
+                d_l=self.container_capacity_lower_bound,
+                d_u=self.container_capacity_upper_bound
+            )
+            objectives, variables = solve_optimization_problem(problem)
+            if objectives is not None and variables is not None:
+                break
+        
         print("Analyse results:")
         if objectives is None or variables is None:
             print("no optimized answer found for the problem")
+            p_s = None
+            W = None
+            gamma = None
         else:
             p_s, W, gamma = choose_on_pf(-1 * objectives, variables)
-            # we can also insert results into some sort of database
-            requests , con_users = self.analysis.monitoring.get_request_properties()
-            data = {
-                "requests":requests,
-                "concurrent_users":con_users,
-                "arrival_rate": self.analysis.arrival_rate,
-                "response_time": self.analysis.response_time,
-                "data_payload": self.analysis.data_payload,
-                "predicted_p_s": p_s,
-                "predicted_W": W,
-                "predicted_gamma": gamma,
-                "date": datetime.now()
-            }
-            super().database_insertion(data)
             print("Optimized Results:")
             print({
                 "p_s": p_s,
                 "W": W,
                 "gamma": gamma
             })
+        # we can also insert results into some sort of database
+        requests , con_users = self.analysis.monitoring.get_request_properties()
+        data = {
+            "requests":requests,
+            "concurrent_users":con_users,
+            "arrival_rate": self.analysis.arrival_rate,
+            "response_time": self.analysis.response_time,
+            "data_payload": self.analysis.data_payload,
+            "predicted_p_s": p_s,
+            "predicted_W": W,
+            "predicted_gamma": gamma,
+            "date": datetime.now()
+        }
+        super().database_insertion(data)
 
         # if you want to use execution step uncomment line below
         # super().notify()
