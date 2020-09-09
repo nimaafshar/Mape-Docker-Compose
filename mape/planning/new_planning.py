@@ -30,6 +30,12 @@ class OptimizationPlanning(Planning):
         # self.nb_containers = last_data.get("nb_containers")
         # total_net_usage = last_data.get('net_rx') + last_data.get('net_tx')
         objectives, variables = None,None
+        
+        if self.get_response_time() > self.response_time_upper_bound:
+            response_time_upper_bound = self.get_response_time() 
+        else:
+            response_time_upper_bound = self.response_time_upper_bound
+
         for i in range(10):
             print("trying to solve optimiation problem: try"+str(i+1))
             problem = AdaptationProblem(
@@ -39,7 +45,7 @@ class OptimizationPlanning(Planning):
                 gamma_l=self.banner_count_lower_bound,
                 gamma_u=self.banner_count_upper_bound,
                 R_l=self.response_time_lower_bound,
-                R_u=self.response_time_upper_bound,
+                R_u=response_time_upper_bound,
                 d_l=self.container_capacity_lower_bound,
                 d_u=self.container_capacity_upper_bound
             )

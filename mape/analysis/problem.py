@@ -81,7 +81,7 @@ def solve_optimization_problem(problem: AdaptationProblem):
 
     # defining termination
     # i chosed termination criteria by looking at decrese in average cv
-    termination = get_termination('n_gen', 130)
+    termination = get_termination('n_gen', 170)
 
     # solving problem and getting the results
     res = minimize(problem,
