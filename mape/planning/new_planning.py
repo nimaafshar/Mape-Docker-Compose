@@ -31,6 +31,7 @@ class OptimizationPlanning(Planning):
         # total_net_usage = last_data.get('net_rx') + last_data.get('net_tx')
         objectives, variables = None,None
         for i in range(10):
+            print("trying to solve optimiation problem: try"+str(i+1))
             problem = AdaptationProblem(
                 landa=self.get_arrival_rate(),
                 n=self.get_average_payload(),  # you can change KB to bytes
