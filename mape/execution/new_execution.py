@@ -1,6 +1,6 @@
 import os
 import sys
-
+from subprocess import call
 
 
 sys.path.insert(0, ".")
@@ -17,5 +17,5 @@ class DockerExecution(Execution):
         print("Execute\n")
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
         print("docker compose path:",docker_compose_path)
-        os.system("docker-compose -f {} up -d --scale picalculator={}".format(os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY"),
-                                                                     self.planning.get_decision()))
+        call("docker-compose -f {} up -d --scale picalculator={}".format(os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY"),
+                                                                     self.planning.get_decision()),shell=True)
