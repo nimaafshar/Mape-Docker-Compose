@@ -8,7 +8,7 @@ import docker
 from monitoring.new_monitoring import EASEMonitoring
 from analysis.new_analysis import EASEAnalysis
 from planning.new_planning import OptimizationPlanning
-from Execution.new_execution import DockerExecution
+from execution.new_execution import DockerExecution
 
 
 # from execution.docker_execution import DockerExecution
