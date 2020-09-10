@@ -8,6 +8,7 @@ import docker
 from monitoring.new_monitoring import EASEMonitoring
 from analysis.new_analysis import EASEAnalysis
 from planning.new_planning import OptimizationPlanning
+from Execution.new_execution import DockerExecution
 
 
 # from execution.docker_execution import DockerExecution
@@ -25,9 +26,10 @@ def main():
     monitoring = EASEMonitoring(mongo_client, docker.from_env())
     analysis = EASEAnalysis(mongo_client, monitoring)
     planning = OptimizationPlanning(analysis, mongo_client)
-    # execution = DockerExecution(planning)
+    execution = DockerExecution(planning)
+    
     analysis.attach(planning)
-    # planning.attach(execution)
+    planning.attach(execution)
 
     while True:
         monitoring.get_measurements()

@@ -4,6 +4,7 @@ from analysis.new_analysis import EASEAnalysis
 from monitoring.new_monitoring import EASEMonitoring
 import os
 from datetime import datetime
+from math import ceil
 
 
 class OptimizationPlanning(Planning):
@@ -24,6 +25,7 @@ class OptimizationPlanning(Planning):
         self.nb_containers = 0
         self.analysis = analysis
         self.mongodb_client = mongodb_client
+        self.decision = None
 
     def update(self):
         # last_data = super().get_last_data()
@@ -67,6 +69,7 @@ class OptimizationPlanning(Planning):
                 "W": W,
                 "gamma": gamma
             })
+            self.decision = ceil(W)
         # we can also insert results into some sort of database
         requests , con_users = self.analysis.monitoring.get_request_properties()
         data = {
@@ -78,7 +81,8 @@ class OptimizationPlanning(Planning):
             "predicted_p_s": p_s,
             "predicted_W": W,
             "predicted_gamma": gamma,
-            "date": datetime.now()
+            "date": datetime.now(),
+            "cycle":self.analysis.monitoring.cycle_number
         }
         super().database_insertion(data)
 
@@ -105,3 +109,6 @@ class OptimizationPlanning(Planning):
 
     def get_monitoring_time(self):
         return EASEMonitoring.interval  # in seconds
+
+    def get_decision(self):
+        return self.decision

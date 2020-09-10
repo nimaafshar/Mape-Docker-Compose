@@ -2,6 +2,7 @@ version: "3"
 services:
   bb:
     image: mongo:3-xenial
+    container_name: mongo-server
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -13,11 +14,11 @@ services:
   bbmanager:
     image: mongo-express
     links:
-      - bb
+      - bb:db
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_SERVER: mongo-server
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
   mape:
@@ -31,4 +32,6 @@ services:
   picalculator:
     image: picalculator
     ports:
-      - 5000:5000
+      - 5000-5030:5000
+    logging:
+       driver: none
