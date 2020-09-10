@@ -33,7 +33,7 @@ class EASEMonitoring(Monitoring):
                     requests, concurrent_users = int(splited[0]), int(splited[1])
                     self.request_property_set.append((requests,concurrent_users))
                 except Exception as e:
-                    raise Exception("nvalid request_property_set.txt format it should contain integers")
+                    raise Exception("invalid request_property_set.txt format it should contain integers")
 
         super().__init__(mongodb_client, env_client)
 

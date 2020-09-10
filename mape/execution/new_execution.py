@@ -15,5 +15,7 @@ class DockerExecution(Execution):
     def update(self):
         print("Execute\n")
         print(os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY"))
-        os.system("docker-compose -f {} up -d --scale picalculator={}".format(os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY"),
+        with open(os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY"),'r') as f:
+            print("docker compose:",f.readline())
+        os.system("sudo docker-compose -f {} up -d --scale picalculator={}".format(os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY"),
                                                                      self.planning.get_decision()))
