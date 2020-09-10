@@ -87,7 +87,7 @@ class OptimizationPlanning(Planning):
         super().database_insertion(data)
 
         # if you want to use execution step uncomment line below
-        # super().notify()
+        super().notify()
 
     def get_arrival_rate(self):
         if self.analysis.arrival_rate is None:
