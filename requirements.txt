@@ -3,3 +3,4 @@ pytz
 pymongo
 docker==2.4.2
 pymoo
+requests

@@ -29,6 +29,8 @@ services:
       - ./log:/mape/log
     links:
       - bb:mongodb
+    ports: 
+      - 5522:5522
   picalculator:
     image: picalculator
     ports:
