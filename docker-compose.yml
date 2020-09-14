@@ -34,6 +34,6 @@ services:
   picalculator:
     image: picalculator
     ports:
-      - "5000-5030":5000
+      - "5000-5030":"5000"
     # logging:
     #    driver: none
