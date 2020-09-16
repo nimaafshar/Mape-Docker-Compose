@@ -9,6 +9,9 @@ from monitoring.new_monitoring import EASEMonitoring
 from analysis.new_analysis import EASEAnalysis
 from planning.new_planning import OptimizationPlanning
 from execution.new_execution import DockerExecution
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # from execution.docker_execution import DockerExecution

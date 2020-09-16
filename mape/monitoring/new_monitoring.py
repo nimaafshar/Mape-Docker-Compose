@@ -24,7 +24,7 @@ class EASEMonitoring(Monitoring):
         self.port = os.getenv("BACKEND_PORT")
         # reading request property set
         self.request_property_set = []
-        with open("request_property_set.txt", 'r') as f:
+        with open("mape/request_property_set.txt", 'r') as f:
             for line in f:
                 splited = line.split()
                 if len(splited) < 2:
