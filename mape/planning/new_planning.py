@@ -85,7 +85,7 @@ class OptimizationPlanning(Planning):
             "cycle":self.analysis.monitoring.cycle_number
         }
         super().database_insertion(data)
-
+        print("data inserted to mongodb")
         # if you want to use execution step uncomment line below
         super().notify()
 
