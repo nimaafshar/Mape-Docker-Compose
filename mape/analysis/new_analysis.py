@@ -16,6 +16,7 @@ class EASEAnalysis(Analysis):
         # returns first group of that property
         m = re.search(pattern, text)
         if m is None:
+            print("text:",text)
             raise Exception("CANNOT FIND REQUESTS PER SECOND")
         else:
             return float(m.group(2))
