@@ -34,5 +34,8 @@ services:
       # - 5522:5522
   picalculator:
     image: picalculator
-    ports:
-      - "5000-5030:5000"
+
+  proxy:
+    build: proxy
+    ports: 
+      - 5000:80
