@@ -38,4 +38,4 @@ services:
   proxy:
     build: proxy
     ports: 
-      - 5000:80
+      - 80:80
