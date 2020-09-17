@@ -28,4 +28,4 @@ class DockerExecution(Execution):
                             stdout=subprocess.PIPE,
                             close_fds=True,
                             stderr=subprocess.STDOUT)
-        print("results:",p.stdout.read())
+        print("results:",p.stdout.read().decode('utf-8'))
