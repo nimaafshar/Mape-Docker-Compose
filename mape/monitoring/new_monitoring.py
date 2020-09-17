@@ -57,6 +57,7 @@ class EASEMonitoring(Monitoring):
         url = "http://" + self.host + ":" + self.port + "/?d=" + str(digits)
         print("sending " + str(request_number) + " requests by " + str(concurent_users) + " concurrent users")
         # using an apache benchmark subprocess to
+        print("running this command:",['ab', '-n', str(request_number), '-c', str(concurent_users), url])
         result = subprocess.run(['ab', '-n', str(request_number), '-c', str(concurent_users), url],
                                 stdout=subprocess.PIPE)
         self.raw_results = result.stdout.decode('utf-8')
