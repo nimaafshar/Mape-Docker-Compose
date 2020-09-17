@@ -16,13 +16,10 @@ class DockerExecution(Execution):
 
     def update(self):
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
-        # print("Execute:",f"docker-compose -f {docker_compose_path} up -d --scale picalculator={self.planning.get_decision()}")
-        # we cant run commands from inside docker container
-        # so we send continaer and replicas to the docker-manager flask server as request parameters
-        # todo:check if this works and doesn't restarts all of the services
-        url = 'http://'+os.getenv("DOCKER_MANAGER_HOST")+':'+os.getenv("DOCKER_MANAGER_PORT")+'/picalculator/'+str(self.planning.get_decision())
-        response = requests.get(url)
-        print("DOCKER MANAGER RESULTS:",response.text)
+        print("Execute:",f"docker-compose -f {docker_compose_path} up -d --scale picalculator={self.planning.get_decision()} --no-recreate",shell=True)
+    
+        # response = requests.get(url)
+        # print("DOCKER MANAGER RESULTS:",response.text)
         
         # p = subprocess.Popen(["docker-compose", "-f",docker_compose_path, "up" ,"-d" ,"--scale", f"picalculator={self.planning.get_decision()}"],shell=True)
         # p = subprocess.Popen(f"docker-compose -f {docker_compose_path} up -d --scale picalculator={self.planning.get_decision()}",shell=True)
