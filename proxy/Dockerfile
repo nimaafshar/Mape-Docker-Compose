@@ -1,4 +1,4 @@
-FROM ngnix:alpine
+FROM nginx:alpine
 
 RUN rm etc/ngnix/conf.d/*
 
