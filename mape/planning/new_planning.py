@@ -26,6 +26,10 @@ class OptimizationPlanning(Planning):
         self.analysis = analysis
         self.mongodb_client = mongodb_client
         self.decision = None
+        self.W_s = os.environ.get("W_s")
+        self.W_a = os.environ.get("W_a")
+        self.W_u = os.environ.get("W_u")
+        print(f"Running with: W_s={self.W_s} W_a={self.W_a} W_u={self.W_u}")
 
     def update(self):
         # last_data = super().get_last_data()
@@ -62,7 +66,7 @@ class OptimizationPlanning(Planning):
             W = None
             gamma = None
         else:
-            p_s, W, gamma = choose_on_pf(-1 * objectives, variables)
+            p_s, W, gamma = choose_on_pf(-1 * objectives, variables, w_s=self.W_s, w_a=self.W_a, w_u=self.W_u)
             print("Optimized Results:")
             print({
                 "p_s": p_s,
