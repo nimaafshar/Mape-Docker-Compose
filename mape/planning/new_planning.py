@@ -26,9 +26,9 @@ class OptimizationPlanning(Planning):
         self.analysis = analysis
         self.mongodb_client = mongodb_client
         self.decision = None
-        self.W_s = os.environ.get("W_s")
-        self.W_a = os.environ.get("W_a")
-        self.W_u = os.environ.get("W_u")
+        self.W_s = float(os.environ.get("W_s"))
+        self.W_a = float(os.environ.get("W_a"))
+        self.W_u = float(os.environ.get("W_u"))
         print(f"Running with: W_s={self.W_s} W_a={self.W_a} W_u={self.W_u}")
 
     def update(self):
