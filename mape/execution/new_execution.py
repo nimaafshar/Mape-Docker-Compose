@@ -16,11 +16,11 @@ class DockerExecution(Execution):
 
     def update(self):
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
-        repilcas = self.planning.get_decision()
-        if repilcas is None:
+        replicas = self.planning.get_decision()
+        if replicas is None:
             print("Replicas remain the same")
             return
-        if repilcas > 10:
+        if replicas > 10:
             repilcas = 10
         command = f"docker-compose -f {docker_compose_path} up -d --scale picalculator={replicas} --no-recreate"
         print("Execute:",command)
