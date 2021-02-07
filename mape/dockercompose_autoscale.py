@@ -32,7 +32,7 @@ def main():
     ease_monitoring = EASEMonitoring(mongo_client, docker.from_env())
     docker_monitoring = DockerMonitoring(mongo_client, docker.from_env())
     optimization_analysis = EASEAnalysis(mongo_client, ease_monitoring)
-    threshold_analysis = ThresholdAnalysis(mongo_client,80,20) 
+    threshold_analysis = ThresholdAnalysis(mongo_client,float(os.getenv("CPU_UPPER_THRESHOLD")),float(os.getenv("CPU_LOWER_THRESHOLD"))) 
     optimization_planning = OptimizationPlanning(optimization_analysis, mongo_client)
     docker_planning = DockerPlanning(mongo_client, threshold_analysis)
 
