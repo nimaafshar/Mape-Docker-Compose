@@ -20,12 +20,16 @@ class ThresholdAnalysis(Analysis):
         self.pre_cpu_average = 0
         self.cpu_average = 0
         self.prec_cpu_list = []
+        self.status = 0
 
     def get_nb_containers(self):
         return self.nb_containers
 
     def get_result(self):
         return self.result
+
+    def get_status(self):
+        return self.status
 
     def get_upper_threshold(self):
         return self.upper_threshold
@@ -65,12 +69,16 @@ class ThresholdAnalysis(Analysis):
             if self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list)) == -1:
                 self.result = self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list))
                 print("Analyse: Scale down\n")
+                self.status = -1
                 super().notify()
             elif self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list)) == 1:
                 self.result = self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list))
+                self.status = 1
                 print("Analyse: Scale up\n")
                 super().notify()
             else:
                 print("Analyse: RAS\n")
+                self.status = 0
         else:
             print("Analyse: RAS\n")
+            self.status = 0

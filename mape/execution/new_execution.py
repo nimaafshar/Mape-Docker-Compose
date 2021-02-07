@@ -10,13 +10,16 @@ from execution.execution import Execution
 
 
 class DockerExecution(Execution):
-    def __init__(self, planning):
+    def __init__(self, threshold_planning, optimization_planning):
         super().__init__()
-        super().set_planning(planning)
+        super().set_threshold_planning(threshold_planning)
+        super().set_optimization_planning(optimization_planning)
 
     def update(self):
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
-        replicas = self.planning.get_decision()
+        # get optimization planning decision
+        replicas = self.planning['optimization'].get_decision()
+        #get status from threshold planning
         if replicas is None:
             print("Replicas remain the same")
             return
