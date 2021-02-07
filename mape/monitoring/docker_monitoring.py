@@ -88,24 +88,24 @@ class DockerMonitoring(Monitoring):
         for cont in containers:
             if "web" in str(cont.labels.get('com.docker.compose.service')):
                 self.nb_containers += 1
-                try:
-                    container_stats = cont.stats(decode=False, stream=False)
-                    name = cont.name.replace(".", "_")
-                    data[name] = {'short_id': cont.short_id,
-                                  'cpu_percent': float(self.get_cpu_percent(container_stats)),
-                                  'cpu_power': float(
-                                      self.mongodb_client.powerapi.formula.find_one({"target": cont.name}, sort=[
-                                          ('_id', pymongo.DESCENDING)]).get("power")),
-                                  'memory': float(self.get_memory(container_stats)['memory']),
-                                  'memory_limit': float(self.get_memory(container_stats)['memory_limit']),
-                                  'memory_percent': float(self.get_memory(container_stats)['memory_percent']),
-                                  'disk_i': float(self.get_disk_io(container_stats)['disk_i']),
-                                  'disk_o': float(self.get_disk_io(container_stats)['disk_o']),
-                                  'net_rx': float(self.get_network_throughput(container_stats)['rx']),
-                                  'net_tx': float(self.get_network_throughput(container_stats)['tx'])}
-                except:
-                    print("fail")
-                    pass
+                # try:
+                container_stats = cont.stats(decode=False, stream=False)
+                name = cont.name.replace(".", "_")
+                data[name] = {'short_id': cont.short_id,
+                                'cpu_percent': float(self.get_cpu_percent(container_stats)),
+                                'cpu_power': float(
+                                    self.mongodb_client.powerapi.formula.find_one({"target": cont.name}, sort=[
+                                        ('_id', pymongo.DESCENDING)]).get("power")),
+                                'memory': float(self.get_memory(container_stats)['memory']),
+                                'memory_limit': float(self.get_memory(container_stats)['memory_limit']),
+                                'memory_percent': float(self.get_memory(container_stats)['memory_percent']),
+                                'disk_i': float(self.get_disk_io(container_stats)['disk_i']),
+                                'disk_o': float(self.get_disk_io(container_stats)['disk_o']),
+                                'net_rx': float(self.get_network_throughput(container_stats)['rx']),
+                                'net_tx': float(self.get_network_throughput(container_stats)['tx'])}
+                # except:
+                #     print("fail")
+                #     pass
 
         data['nb_containers'] = self.nb_containers
         super().database_insertion(data, "containers")
