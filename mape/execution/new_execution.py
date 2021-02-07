@@ -24,16 +24,19 @@ class DockerExecution(Execution):
             return
         if status != 0:
             replicas = self.planning['threshold'].get_decision()
+            print("applying threshold analysis decision")
         else:
             # get optimization planning decision
             replicas = self.planning['optimization'].get_decision()
+            print("applying optimization analysis decision")
             
         if replicas is None:
             print("Replicas remain the same")
             return
         if replicas > 10:
+            print("Replicas are going above maximum. going on with 10 replicas")
             repilcas = 10
-        command = f"docker-compose -f {docker_compose_path} up -d --scale picalculator={replicas} --no-recreate"
+        command = f"docker-compose -f {docker_compose_path} up -d --scale web={replicas} --no-recreate"
         print("Execute:",command)
     
         # response = requests.get(url)
