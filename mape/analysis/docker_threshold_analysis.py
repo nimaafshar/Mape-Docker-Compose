@@ -12,8 +12,8 @@ class ThresholdAnalysis(Analysis):
             raise ValueError("Invalid threshold. Please make sure 0<lower_threshold<upper_threshold<100.")
         super().__init__(mongodb_client)
 
-        self.upper_threshold = upper_threshold
-        self.lower_threshold = lower_threshold
+        self.upper_threshold = upper_threshold/100
+        self.lower_threshold = lower_threshold/100
         self.nb_containers = 0
         self.result = 0
         self.cpu_list = []
