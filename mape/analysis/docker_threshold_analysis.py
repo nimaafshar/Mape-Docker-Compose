@@ -70,15 +70,12 @@ class ThresholdAnalysis(Analysis):
                 self.result = self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list))
                 print("Analyse: Scale down\n")
                 self.status = -1
-                super().notify()
             elif self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list)) == 1:
                 self.result = self.analyse_cpu(sum(self.prec_cpu_list) / len(self.prec_cpu_list))
                 self.status = 1
                 print("Analyse: Scale up\n")
-                super().notify()
             else:
                 print("Analyse: RAS\n")
-                self.status = 0
         else:
             print("Analyse: RAS\n")
-            self.status = 0
+        super().notify()
