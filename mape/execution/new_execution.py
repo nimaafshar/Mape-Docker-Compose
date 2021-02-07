@@ -19,7 +19,7 @@ class DockerExecution(Execution):
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
         #get status from threshold planning
         status = self.planning['threshold'].get_status()
-        if not status:
+        if status is None:
             print("Status not found")
             return
         if status != 0:
@@ -29,7 +29,7 @@ class DockerExecution(Execution):
             # get optimization planning decision
             replicas = self.planning['optimization'].get_decision()
             print("applying optimization analysis decision")
-            
+
         if replicas is None:
             print("Replicas remain the same")
             return
