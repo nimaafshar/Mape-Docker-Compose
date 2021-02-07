@@ -76,6 +76,8 @@ class ThresholdAnalysis(Analysis):
                 print("Analyse: Scale up\n")
             else:
                 print("Analyse: RAS\n")
+                self.status = 0
         else:
             print("Analyse: RAS\n")
+            self.status = 0
         super().notify()

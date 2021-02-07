@@ -25,5 +25,5 @@ class DockerPlanning(Planning):
         self.status = self.analysis.get_status()
         if self.decision < 1:
             self.decision = 1
-        print("Plan\n")
+        print(f"Plan:\n status:{self.status}")
         self.notify()
