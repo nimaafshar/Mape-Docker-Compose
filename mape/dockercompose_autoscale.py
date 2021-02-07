@@ -6,6 +6,7 @@ import pymongo
 import sys
 import docker
 from monitoring.new_monitoring import EASEMonitoring
+from monitoring.docker_monitoring import DockerMonitoring
 from analysis.new_analysis import EASEAnalysis
 from analysis.docker_threshold_analysis import ThresholdAnalysis
 from planning.new_planning import OptimizationPlanning
@@ -28,8 +29,9 @@ def main():
     signal(SIGINT, handler)
     URI = os.getenv("URI")
     mongo_client = pymongo.MongoClient(URI)
-    monitoring = EASEMonitoring(mongo_client, docker.from_env())
-    optimization_analysis = EASEAnalysis(mongo_client, monitoring)
+    ease_monitoring = EASEMonitoring(mongo_client, docker.from_env())
+    docker_monitoring = DockerMonitoring(mongo_client, docker.from_env())
+    optimization_analysis = EASEAnalysis(mongo_client, ease_monitoring)
     threshold_analysis = ThresholdAnalysis(mongo_client,80,20) 
     optimization_planning = OptimizationPlanning(optimization_analysis, mongo_client)
     docker_planning = DockerPlanning(mongo_client, threshold_analysis)
@@ -42,7 +44,8 @@ def main():
     optimization_planning.attach(execution)
 
     while True:
-        monitoring.get_measurements()
+        docker_monitoring.get_measurements()
+        ease_monitoring.get_measurements()
         threshold_analysis.update()
         optimization_analysis.update()
         time.sleep(EASEMonitoring.interval)
