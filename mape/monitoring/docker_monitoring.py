@@ -93,9 +93,9 @@ class DockerMonitoring(Monitoring):
                 name = cont.name.replace(".", "_")
                 data[name] = {'short_id': cont.short_id,
                                 'cpu_percent': float(self.get_cpu_percent(container_stats)),
-                                'cpu_power': float(
-                                    self.mongodb_client.powerapi.formula.find_one({"target": cont.name}, sort=[
-                                        ('_id', pymongo.DESCENDING)]).get("power")),
+                                # 'cpu_power': float(
+                                #     self.mongodb_client.powerapi.formula.find_one({"target": cont.name}, sort=[
+                                #         ('_id', pymongo.DESCENDING)]).get("power")),
                                 'memory': float(self.get_memory(container_stats)['memory']),
                                 'memory_limit': float(self.get_memory(container_stats)['memory_limit']),
                                 'memory_percent': float(self.get_memory(container_stats)['memory_percent']),
