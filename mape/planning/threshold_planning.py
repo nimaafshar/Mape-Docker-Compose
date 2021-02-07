@@ -6,8 +6,8 @@ from planning.planning import Planning
 
 
 class DockerPlanning(Planning):
-    def __init__(self, analysis):
-        super().__init__()
+    def __init__(self, mongodb_client, analysis):
+        super().__init__(mongodb_client)
         super().set_analysis(analysis)
         self.decision = None
         self.status = None

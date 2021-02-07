@@ -32,7 +32,7 @@ def main():
     optimization_analysis = EASEAnalysis(mongo_client, monitoring)
     threshold_analysis = ThresholdAnalysis(mongo_client,80,20) 
     optimization_planning = OptimizationPlanning(optimization_analysis, mongo_client)
-    docker_planning = DockerPlanning(threshold_analysis)
+    docker_planning = DockerPlanning(mongo_client, threshold_analysis)
 
     execution = DockerExecution(docker_planning,optimization_planning)
     
