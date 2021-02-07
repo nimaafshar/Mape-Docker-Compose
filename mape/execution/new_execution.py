@@ -18,6 +18,7 @@ class DockerExecution(Execution):
     def update(self):
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
         #get status from threshold planning
+        replicas = None
         status = self.planning['threshold'].get_status()
         if status is None:
             print("Status not found")
@@ -35,7 +36,7 @@ class DockerExecution(Execution):
             return
         if replicas > 10:
             print("Replicas are going above maximum. going on with 10 replicas")
-            repilcas = 10
+            replicas = 10
         command = f"docker-compose -f {docker_compose_path} up -d --scale web={replicas} --no-recreate"
         print("Execute:",command)
     
