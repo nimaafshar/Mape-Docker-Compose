@@ -47,6 +47,7 @@ class ThresholdAnalysis(Analysis):
 
     def update(self):
         last_data = super().get_last_data()
+        print("last data"+last_data)
         self.nb_containers = last_data.get("nb_containers")
         self.cpu_list = []
         data_items = list(last_data.items())
