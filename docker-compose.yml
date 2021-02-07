@@ -32,7 +32,7 @@ services:
   #   network_mode: "host"
     # ports: 
       # - 5522:5522
-  picalculator:
+  web:
     image: picalculator
 
   proxy:
