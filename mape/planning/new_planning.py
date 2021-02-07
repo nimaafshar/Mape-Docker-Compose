@@ -74,6 +74,8 @@ class OptimizationPlanning(Planning):
                 "gamma": gamma
             })
             self.decision = ceil(W)
+            if self.decision < 1:
+                self.decision = 1
         # we can also insert results into some sort of database
         requests , con_users = self.analysis.monitoring.get_request_properties()
         data = {
