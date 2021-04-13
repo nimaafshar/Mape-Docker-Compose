@@ -31,6 +31,9 @@ class OptimizationPlanning(Planning):
         self.W_u = float(os.environ.get("W_u"))
         print(f"Running with: W_s={self.W_s} W_a={self.W_a} W_u={self.W_u}")
 
+    def get_cycle_number(self):
+        return self.analysis.monitoring.cycle_number
+
     def update(self):
         # last_data = super().get_last_data()
         # self.nb_containers = last_data.get("nb_containers")
@@ -88,7 +91,7 @@ class OptimizationPlanning(Planning):
             "predicted_W": W,
             "predicted_gamma": gamma,
             "date": datetime.now(),
-            "cycle":self.analysis.monitoring.cycle_number
+            "cycle":self.get_cycle_number()
         }
         super().database_insertion(data)
         print("data inserted to mongodb")

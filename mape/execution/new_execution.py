@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import requests
+from datetime import datetime
 
 
 sys.path.insert(0, ".")
@@ -10,8 +11,8 @@ from execution.execution import Execution
 
 
 class DockerExecution(Execution):
-    def __init__(self, threshold_planning, optimization_planning):
-        super().__init__()
+    def __init__(self, threshold_planning, optimization_planning,mongodb_client):
+        super().__init__(mongodb_client)
         super().set_threshold_planning(threshold_planning)
         super().set_optimization_planning(optimization_planning)
 
@@ -42,7 +43,11 @@ class DockerExecution(Execution):
     
         # response = requests.get(url)
         # print("DOCKER MANAGER RESULTS:",response.text)
-        
+        self.database_insertion({
+            "replicas":replicas,
+            "date":datetime.now(),
+            "cycle":self.planning['optimization'].get_cycle_number()
+        })
         # p = subprocess.Popen(["docker-compose", "-f",docker_compose_path, "up" ,"-d" ,"--scale", f"picalculator={self.planning.get_decision()}"],shell=True)
         p = subprocess.Popen(command,
                             shell=True,

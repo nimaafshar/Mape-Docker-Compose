@@ -10,7 +10,6 @@ class Planning(ABC):
     def database_insertion(self, data):
         self.mongodb_client["monitoring"]["planning"].insert_one(data)
 
-
     def set_analysis(self, analysis):
         self.analysis = analysis
 
