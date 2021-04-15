@@ -33,7 +33,7 @@ services:
     # ports: 
       # - 5522:5522
   web:
-    image: picalculator
+    build: ./picalculator/
 
   proxy:
     build: proxy
