@@ -11,10 +11,11 @@ from execution.execution import Execution
 
 
 class DockerExecution(Execution):
-    def __init__(self, threshold_planning, optimization_planning,mongodb_client):
+    def __init__(self, threshold_planning, optimization_planning,mongodb_client, maximum_containers):
         super().__init__(mongodb_client)
         super().set_threshold_planning(threshold_planning)
         super().set_optimization_planning(optimization_planning)
+        self.maximum_containers = maximum_containers
 
     def update(self):
         docker_compose_path = os.getcwd() + '/' + os.getenv("DOCKER_COMPOSE_FILE_DIRECTORY")
@@ -35,9 +36,9 @@ class DockerExecution(Execution):
         if replicas is None:
             print("Replicas remain the same")
             return
-        if replicas > 10:
+        if replicas > self.maximum_containers:
             print("Replicas are going above maximum. going on with 10 replicas")
-            replicas = 10
+            replicas = self.maximum_containers
         command = f"docker-compose -f {docker_compose_path} up -d --scale web={replicas} --no-recreate"
         print("Execute:",command)
     

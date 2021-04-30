@@ -31,6 +31,7 @@ class DockerMonitoring(Monitoring):
         self.rx_bytes = 0.0
         self.tx_bytes = 0.0
         self.mongodb_client.drop_database("monitoring")
+        self.cycle = 0
 
     def get_cpu_percent(self, data):
         if data['cpu_stats']['cpu_usage']['total_usage'] is not None:
@@ -108,6 +109,8 @@ class DockerMonitoring(Monitoring):
                     pass
 
         data['nb_containers'] = self.nb_containers
+        data['cycle'] = self.cycle
+        self.cycle += 1
         super().database_insertion(data, "containers")
         t2 = time.time()
         self.delay = float(t2 - t1)

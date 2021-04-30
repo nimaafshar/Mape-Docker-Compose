@@ -36,7 +36,7 @@ def main():
     optimization_planning = OptimizationPlanning(optimization_analysis, mongo_client)
     docker_planning = DockerPlanning(mongo_client, threshold_analysis)
 
-    execution = DockerExecution(docker_planning,optimization_planning,mongo_client)
+    execution = DockerExecution(docker_planning,optimization_planning,mongo_client,50)
     
     optimization_analysis.attach(optimization_planning)
     threshold_analysis.attach(docker_planning)
