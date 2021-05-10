@@ -85,7 +85,7 @@ class DockerMonitoring(Monitoring):
         self.delay = 0
         self.nb_containers = 0
         containers = self.env_client.containers.list()
-        data = {'date': datetime.datetime.now(pytz.timezone('America/Montreal')), 'nb_containers': 0}
+        data = {'date': datetime.datetime.now(pytz.timezone('America/Montreal')), 'nb_containers': 0,'cycle' : self.cycle}
         for cont in containers:
             if "web" in str(cont.labels.get('com.docker.compose.service')):
                 self.nb_containers += 1
@@ -109,7 +109,6 @@ class DockerMonitoring(Monitoring):
                     pass
 
         data['nb_containers'] = self.nb_containers
-        data['cycle'] = self.cycle
         self.cycle += 1
         super().database_insertion(data, "containers")
         t2 = time.time()
