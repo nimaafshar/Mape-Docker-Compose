@@ -51,7 +51,6 @@ class ThresholdAnalysis(Analysis):
         self.cpu_list = []
         data_items = list(last_data.items())
         for i in range(4, len(data_items)):
-            print(data_items[i])
             self.cpu_list.append(data_items[i][1].get("cpu_percent"))
         self.cpu_average = sum(self.cpu_list) / len(self.cpu_list)
 
