@@ -36,9 +36,9 @@ class DockerExecution(Execution):
         if replicas is None:
             print("Replicas remain the same")
             return
-        if replicas > self.maximum_containers:
-            print("Replicas are going above maximum. going on with 10 replicas")
-            replicas = self.maximum_containers
+        # if replicas > self.maximum_containers:
+            # print("Replicas are going above maximum. going on with 10 replicas")
+            # replicas = self.maximum_containers
         command = f"docker-compose -f {docker_compose_path} up -d --scale web={replicas} --no-recreate"
         print("Execute:",command)
     
