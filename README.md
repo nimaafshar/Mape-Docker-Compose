@@ -26,7 +26,7 @@ so we consider this flask application as a simple web service and in the monitor
 - Linux OS
 - Docker
 - Docker Compose
-- Python 3
+- Python 3.8
 - Python-pip
 
 firt clone project into current directory. then install python requirements using pip by running this command in project root:
@@ -50,7 +50,7 @@ at last run python code with sudo access by running below command in project roo
 ```bash
 sudo python3 mape/dockercompose_autoscale.py
 ```
-<!-- after cloning the project first you run the *mongodb* database by running this command in the root of the project
+after cloning the project first you run the *mongodb* database by running this command in the root of the project
 
 ```bash
 sudo docker-compose -f ./db/docker-compose.yml up -d
@@ -72,5 +72,5 @@ then you run the Flask app and MAPE system using docker compose
 
 ```bash
 sudo docker-compose up
-``` -->
+```
 
