@@ -1,6 +1,6 @@
 version: "3"
 services:
-  bb:
+  db:
     image: mongo:3-xenial
     container_name: mongo-server
     environment:
@@ -10,8 +10,30 @@ services:
       - 27017:27017
     volumes:
       - ./mongodb:/data/db:rw
+  
+  haproxy:
+    image: dockercloud/haproxy:latest
+    links:
+    - web
+    ports:
+    - 8086:80
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 
-  bbmanager:
+  
+  iot:
+    build:
+      context: ./dockers/
+      dockerfile: Dockerfile.iot
+    links:
+    - haproxy
+    environment:
+      TEST_URL: http://haproxy/sensor/add
+      TZ: "America/Montreal"
+    volumes:
+    - ./IoT:/app/run
+
+  dbmanager:
     image: mongo-express
     links:
       - bb:db
@@ -21,21 +43,24 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongo-server
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
-  # mape:
-  #   image: mape_system:latest
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - ./log:/mape/log
-  #   links:
-  #     - bb:mongodb
-  #   network_mode: "host"
-    # ports: 
-      # - 5522:5522
   web:
-    build: ./picalculator/
+    build:
+      context: ./dockers/
+      dockerfile: Dockerfile.web
+    links:
+    - db
 
   proxy:
     build: proxy
     ports: 
       - 8222:8222
+
+  cadvisor:
+      image: google/cadvisor:latest
+      volumes:
+      - /../:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      ports:
+      - 8080:8080
