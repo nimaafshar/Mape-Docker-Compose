@@ -1,7 +1,4 @@
-numpy
-pytz
-pymongo
-docker==2.4.2
-pymoo
-requests
-python-dotenv
+pymoo==0.5.0
+requests==2.27.1
+python-dotenv==0.20.0
+numpy==1.22.3

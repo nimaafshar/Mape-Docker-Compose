@@ -2,22 +2,54 @@ import numpy as np
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.factory import get_problem, get_termination
 from pymoo.optimize import minimize
-from pymoo.visualization.scatter import Scatter
 from pymoo.core.problem import Problem
 
 from dataclasses import dataclass
 
 
 @dataclass
-class AdaptationArguments:
-    Lambda: float
-    n: int
-    H: float
+class EconomicAdaptationParameters:
+    """
+    parameters of the economic adaptation problem that are constant throughout the program
+    Args:
+        p_i (float): cost of a virtual machine in dollars per second, positive
+        p_n (float): cost of data transfer in dollars per KB, positive
+        H (float): static hosting cost in dollars per second
+        RPM (float): revenue per 1000 ads in dollars
+        gamma_l (float): lower bound for average number of ads per page
+        gamma_u (float): upper bound for average number of ads per page
+        R_l (int): response time lower bound (milliseconds) for single VM
+        R_u (int): response time upper bound (milliseconds) for single VM
+        d_l (int): lower bound for capacity of each VM (requests/s)
+        d_u (int): upper bound for capacity of each VM (requests/s)
+        W_a (float): weight of the application in pareto front choosing strategy
+        W_s (float): weight of the service in pareto front choosing strategy
+        W_u (float): weight of the user in pareto front choosing strategy
+    """
     p_i: float
     p_n: float
+    H: float
+    RPM: float
+    gamma_l: int
+    gamma_u: int
+    R_l: int
+    R_u: int
+    d_l: int
+    d_u: int
+    W_a: float
+    W_s: float
+    W_u: float
 
 
-class AdaptationProblem(Problem):
+"""
+changing parameters:
+Lambda: 50 # request arrival rate (req/s)
+    n: 10 # average payload for each response (KB)
+  #R: average response time
+"""
+
+
+class EconomicAdaptationProblem(Problem):
     """
     response times are filled based on papers values(page8-table1)
     """
@@ -93,7 +125,7 @@ def solve_optimization_problem(problem: AdaptationProblem):
     )
 
     # defining termination
-    # i chosed termination criteria by looking at decrese in average cv
+    # I chose termination criteria by looking at decrease in average cv
     termination = get_termination('n_gen', 170)
 
     # solving problem and getting the results

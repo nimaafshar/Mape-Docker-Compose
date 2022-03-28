@@ -1,25 +1,12 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 
-import pymongo
+from ..cycle import CycleStep
+from ..monitoring.data import MonitoringData
+from .data import AnalysisData
 
 
-class Analysis(ABC):
-    def __init__(self, mongodb_client):
-        self.mongodb_client = mongodb_client
-        self.planning = None
-
-    def get_last_data(self):
-        return self.mongodb_client.monitoring.containers.find_one(sort=[('_id', pymongo.DESCENDING)])
-
-    def attach(self, planning):
-        self.planning = planning
-
-    def detach(self):
-        self.planning = None
-
-    def notify(self):
-        self.planning.update()
-
+class Analysis(CycleStep, ABC):
     @abstractmethod
-    def update(self):
+    def update(self, data: Optional[MonitoringData]) -> Optional[AnalysisData]:
         pass

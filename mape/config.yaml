@@ -1,0 +1,17 @@
+optimization:
+  p_i: 2.64E-04 # cost of a VM ($/s)
+  p_n: 3.50E-06 # cost of data transfer ($/KB)
+  H: 8.50E-05 # static hosting cost ($/s)
+  RPM: 0.7 #revenue per 1000 ads ($)
+  gamma_l: 1 # lower bound for average number of ads per page
+  gamma_u: 10 # upper bound for average number of ads per page
+  R_l: 45 # response time lower bound (milliseconds) for single VM
+  R_u: 200 # response time upper bound (milliseconds) for single VM
+  d_l: 15 #lower bound for capacity of each VM (requests/s)
+  d_u: 21 #upper bound for capacity of each VM (requests/s)
+  weights:
+    application: 0.33
+    serivce: 0.33
+    user: 0.33
+
+monitoring:

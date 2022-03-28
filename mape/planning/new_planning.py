@@ -8,16 +8,7 @@ from math import ceil
 
 
 class OptimizationPlanning(Planning):
-    H = 10
-    # in miliseconds
-    response_time_upper_bound = os.environ.get("RESPONSE_TIME_UPPER_BOUND", 2500)
-    response_time_lower_bound = os.environ.get("RESPONSE_TIME_LOWER_BOUND", 10)
-    # in request per seconds
-    container_capacity_lower_bound = os.environ.get("CONTAINER_CAP_LOWER_BOUND", 10)
-    container_capacity_upper_bound = os.environ.get("CONTAINER_CAP_UPPER_BOUND", 200)
-    # count
-    banner_count_lower_bound = os.environ.get("BANNER_LOWER_BOUND", 1)
-    banner_count_upper_bound = os.environ.get("BANNER_UPPER_BOUND", 10)
+
 
     def __init__(self, analysis: EASEAnalysis, mongodb_client):
         # setting constants

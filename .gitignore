@@ -127,8 +127,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-Supprimerait .gitignore
-Supprimerait src/ease/mape/monitoring/__pycache__/
+
 /iot-docker-mongoDB/
 !/mape/monitoring_/average_cpu.py
 /mape/old/
@@ -136,11 +135,4 @@ Supprimerait src/ease/mape/monitoring/__pycache__/
 !/test/
 !/id_rsa
 
-Supprimerait db/mongodb/diagnostic.data/metrics.2019-10-18T14-45-19Z-00000
-Supprimerait db/mongodb/diagnostic.data/metrics.2019-10-21T17-27-32Z-00000
-Supprimerait db/mongodb/journal/WiredTigerLog.0000000006
-Supprimerait mape/analysis_/__init__.py
-Supprimerait mape/execution_/__init__.py
-Supprimerait mape/monitoring_/__init__.py
-Supprimerait mape/planning/__init__.py
 
