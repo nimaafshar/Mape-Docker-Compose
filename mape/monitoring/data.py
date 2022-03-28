@@ -59,4 +59,7 @@ class CombinedMonitoringData(APIMonitoringData, SystemMonitoringData):
     we want both monitoring and system information, so we define a
     new data type that contains both
     """
-    pass
+
+    def __post_init__(self):
+        super(APIMonitoringData, self).__post_init__()
+        super(SystemMonitoringData, self).__post_init__()
