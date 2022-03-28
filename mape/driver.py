@@ -17,10 +17,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# from execution.docker_execution import DockerExecution
-# from planning.threshold_planning import DockerPlanning
-
-
 def handler(signal_received, frame):
     exit(0)
 
