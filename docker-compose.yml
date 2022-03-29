@@ -113,7 +113,6 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
       - cadvisor
-      - node-exporter
     deploy:
       resources:
         limits:
