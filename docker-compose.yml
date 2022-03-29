@@ -39,7 +39,6 @@ services:
       IOT_LOG_LEVEL: 20 # info
     volumes:
       - ./config/iot/:/app/config/  # replace the config file
-      - ./iot_results/:/app/run/    # see results
     deploy:
       resources:
         limits:
