@@ -121,6 +121,7 @@ services:
     build: ./nginx
     ports:
       - "80:80"
+      - "9090:9090"
     depends_on:
       - grafana
       - prometheus
