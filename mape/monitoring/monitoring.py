@@ -31,7 +31,7 @@ class PrometheusMonitoring(Monitoring, ABC):
         super().__init__(interval)
         self._host = host
 
-    def _query_instant_metric(self, querystring: str) -> Optional[List[Dict]]:
+    def _query_instant_metric(self, querystring: str) -> Optional[str]:
         """
         Args:
             querystring (str): prometheus query

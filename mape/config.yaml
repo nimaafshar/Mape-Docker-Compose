@@ -15,3 +15,5 @@ optimization:
     user: 0.33
 
 monitoring:
+  interval: 1m #interval in grafana language
+  host: http://prometheus:9090

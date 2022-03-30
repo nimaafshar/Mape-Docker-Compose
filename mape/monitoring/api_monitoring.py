@@ -1,92 +1,55 @@
-from monitoring.monitoring import Monitoring
-import subprocess
-import random
-import datetime
-import os
-import sys
-import time
+from typing import Optional
 
-import docker
-import pymongo
-import pytz
-from signal import signal, SIGINT
-from sys import exit
+from .data import APIMonitoringData
+from .monitoring import PrometheusMonitoring
+from ..execution import ExecutionData
 
 
-class EASEMonitoring(Monitoring):
-    interval = 60  # monitoring interval in seconds
-    cycle_number = 0
-    raw_results = None
-    successful = False
+class APIMonitoring(PrometheusMonitoring):
 
-    def __init__(self, mongodb_client, env_client):
-        self.host = os.getenv("BACKEND_HOST")
-        self.port = os.getenv("BACKEND_PORT")
-        # reading request property set
-        self.request_property_set = []
-        with open("mape/request_property_set.txt", 'r') as f:
-            for line in f:
-                splited = line.split()
-                if len(splited) < 2:
-                    raise Exception("Invalid request_property_set.txt format there should be 2 integers in a line")
-                try:
-                    requests, concurrent_users = int(splited[0]), int(splited[1])
-                    self.request_property_set.append((requests,concurrent_users))
-                except Exception as e:
-                    raise Exception("invalid request_property_set.txt format it should contain integers")
-
-        super().__init__(mongodb_client, env_client)
-
-    def get_digits_count(self):
-        return random.randint(5, 800)
-
-    def get_request_properties(self):
+    def _query_avg_rps(self) -> Optional[float]:
         """
-        returns a pair consisting of request_count and concurent_users_count
+        average rps (requests per second) of the last monitoring interval
+        returns None in case of connection problems or absence of data
         """
-        #                                      |-> traffic uprising
-        # request_property_set = [(100, 20), (20, 5), (1000, 100), (400, 50), (300, 30), (160, 20), (100, 10)]
+        query: str = f'rate(iotwg_web_response_time_count[{self._interval}])'
+        result = self._query_instant_metric(query)
+        return None if result is None else float(result)
 
-        return self.request_property_set[self.cycle_number % len(self.request_property_set)]
+    def _query_sensor_count(self) -> Optional[int]:
+        """
+        most recent sensor (user) count monitored.
+        returns None in case of connection problems or absence of data
+        """
+        query: str = f'iotwg_sensor_count'
+        result = self._query_instant_metric(query)
+        return None if result is None else int(result)
 
-    def get_measurements(self):
-        self.cycle_number += 1
-        # this part uses apache benchmark to send requests to server
-        digits = self.get_digits_count()
-        request_number, concurent_users = self.get_request_properties()
-        url = "http://" + self.host + ":" + self.port + "/?d=" + str(digits)
-        print("sending " + str(request_number) + " requests by " + str(concurent_users) + " concurrent users")
-        # using an apache benchmark subprocess to
-        print("running this command:",['ab', '-n', str(request_number), '-c', str(concurent_users), url])
-        result = subprocess.run(['ab', '-n', str(request_number), '-c', str(concurent_users), url],
-                                stdout=subprocess.PIPE)
-        self.raw_results = result.stdout.decode('utf-8')
-        if "Connection refused" in self.raw_results:
-            # failed to fetch results restart the backend-docker-container
-            print("CONNECTION REFUSED")
-        elif "Server Software" in self.raw_results:
-            # results fetch was successful
-            # -printing results to a file
-            filename = "log/ab-output-" + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            with open(filename, 'w') as f:
-                f.write(self.raw_results)
-            self.successful = True
-        else:
-            print("ANOTHER ERROR happened:")
-            print(self.raw_results)
-        pass
+    def _query_avg_response_time(self) -> Optional[float]:
+        """
+        average response time in the last monitoring interval in seconds.
+        returns None in case of connection problems or absence of data
+        """
+        query: str = f'rate(iotwg_web_response_time_sum[{self._interval}])/' + \
+                     f'rate(iotwg_web_response_time_count[{self._interval}])'
+        result = self._query_instant_metric(query)
+        return None if result is None else int(result)
 
+    def _query_avg_request_length(self) -> Optional[float]:
+        """
+        average request data length in the last monitoring interval in bytes.
+        returns None in case of connection problems or absence of data
+        """
+        query: str = f'rate(iotwg_web_request_length_sum[{self._interval}])/' + \
+                     f'rate(iotwg_web_request_length_count[{self._interval}])'
+        result = self._query_instant_metric(query)
+        return None if result is None else float(result)
 
-def handler(signal_received, frame):
-    exit(0)
-
-# def main():
-#     signal(SIGINT, handler)
-#     monitoring = EASEMonitoring(pymongo.MongoClient(os.getenv("URI")), docker.from_env())
-#     while True:
-#         monitoring.get_measurements()
-#         time.sleep(DockerMonitoring.interval)
-#
-#
-# if __name__ == "__main__":
-#     main()
+    def update(self, cycle: int, data: Optional[ExecutionData]) -> Optional[APIMonitoringData]:
+        return APIMonitoringData(
+            cycle,
+            self._query_avg_response_time(),
+            self._query_avg_request_length(),
+            self._query_avg_rps(),
+            self._query_sensor_count()
+        )
