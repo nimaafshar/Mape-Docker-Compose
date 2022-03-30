@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 893,
   "graphTooltip": 1,
-  "iteration": 1648584648730,
+  "iteration": 1648591165348,
   "links": [],
   "panels": [
     {
@@ -2376,86 +2376,100 @@
       }
     },
     {
-      "columns": [
-        {
-          "text": "Current",
-          "value": "current"
-        }
-      ],
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": null,
-      "editable": true,
-      "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percentunit"
         },
         "overrides": []
       },
-      "fontSize": "100%",
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 10,
-        "w": 8,
+        "h": 8,
+        "w": 12,
         "x": 0,
         "y": 39
       },
-      "id": 37,
-      "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
+      "hiddenSeries": false,
+      "id": 43,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
-      "styles": [
-        {
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [
-            "10000000",
-            " 25000000"
-          ],
-          "type": "number",
-          "unit": "decbytes"
-        }
-      ],
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_spec_memory_limit_bytes{name=~\".+\"} - container_memory_usage_bytes{name=~\".+\"}) by (name) ",
-          "hide": true,
-          "intervalFactor": 2,
-          "legendFormat": "{{name}}",
-          "metric": "",
-          "refId": "A",
-          "step": 240
-        },
-        {
-          "expr": "sum(container_spec_memory_limit_bytes{name=~\".+\"}) by (name) ",
-          "hide": true,
-          "intervalFactor": 2,
-          "legendFormat": "{{name}}",
-          "refId": "B",
-          "step": 240
-        },
-        {
-          "expr": "container_memory_usage_bytes{name=~\".+\"}",
-          "hide": false,
-          "intervalFactor": 2,
-          "legendFormat": "{{name}}",
-          "refId": "C",
-          "step": 240
+          "expr": "sum(rate(container_cpu_usage_seconds_total[1m])) by(container_label_com_docker_compose_service) /\r\nsum(container_spec_cpu_quota/container_spec_cpu_period) by (container_label_com_docker_compose_service)",
+          "interval": "",
+          "legendFormat": "{{container_label_com_docker_compose_service}}",
+          "refId": "A"
         }
       ],
-      "title": "Usage memory",
-      "transform": "timeseries_aggregations",
-      "type": "table-old"
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Cpu utilization Per Service",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percentunit",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "columns": [
@@ -2478,7 +2492,7 @@
       "gridPos": {
         "h": 10,
         "w": 8,
-        "x": 8,
+        "x": 12,
         "y": 39
       },
       "id": 35,
@@ -2560,8 +2574,90 @@
       "gridPos": {
         "h": 10,
         "w": 8,
-        "x": 16,
-        "y": 39
+        "x": 0,
+        "y": 47
+      },
+      "id": 37,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "align": "auto",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [
+            "10000000",
+            " 25000000"
+          ],
+          "type": "number",
+          "unit": "decbytes"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sum(container_spec_memory_limit_bytes{name=~\".+\"} - container_memory_usage_bytes{name=~\".+\"}) by (name) ",
+          "hide": true,
+          "intervalFactor": 2,
+          "legendFormat": "{{name}}",
+          "metric": "",
+          "refId": "A",
+          "step": 240
+        },
+        {
+          "expr": "sum(container_spec_memory_limit_bytes{name=~\".+\"}) by (name) ",
+          "hide": true,
+          "intervalFactor": 2,
+          "legendFormat": "{{name}}",
+          "refId": "B",
+          "step": 240
+        },
+        {
+          "expr": "container_memory_usage_bytes{name=~\".+\"}",
+          "hide": false,
+          "intervalFactor": 2,
+          "legendFormat": "{{name}}",
+          "refId": "C",
+          "step": 240
+        }
+      ],
+      "title": "Usage memory",
+      "transform": "timeseries_aggregations",
+      "type": "table-old"
+    },
+    {
+      "columns": [
+        {
+          "text": "Current",
+          "value": "current"
+        }
+      ],
+      "datasource": null,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 49
       },
       "id": 36,
       "links": [],
@@ -2790,7 +2886,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -2821,5 +2917,5 @@
   "timezone": "browser",
   "title": "Docker and system monitoring",
   "uid": "8TmXFdP7k",
-  "version": 1
+  "version": 2
 }
