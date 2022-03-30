@@ -60,7 +60,7 @@ class APIMonitoringData(MonitoringData):
 
 
 @dataclass
-class CombinedMonitoringData(APIMonitoringData, SystemMonitoringData):
+class HybridMonitoringData(APIMonitoringData, SystemMonitoringData):
     """
     we want both monitoring and system information, so we define a
     new data type that contains both

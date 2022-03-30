@@ -53,3 +53,5 @@ class APIMonitoring(PrometheusMonitoring):
             self._query_avg_rps(),
             self._query_sensor_count()
         )
+
+
