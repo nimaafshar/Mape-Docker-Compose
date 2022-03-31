@@ -8,5 +8,5 @@ from .data import PlanningData
 
 class Planning(CycleStep, ABC):
     @abstractmethod
-    def update(self, data: Optional[AnalysisData]) -> Optional[PlanningData]:
+    def update(self, cycle: int, data: Optional[AnalysisData]) -> Optional[PlanningData]:
         pass
