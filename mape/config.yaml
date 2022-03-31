@@ -31,3 +31,7 @@ analysis:
 monitoring:
   interval: 1m #interval in grafana language
   host: http://prometheus:9090
+
+planning:
+  min_replicas: 1
+  max_replicas: 20
