@@ -22,16 +22,18 @@ optimization:
       serivce: 0.33
       user: 0.33
 
+monitoring:
+  interval: 1m #interval in grafana language
+  host: http://prometheus:9090
 
 analysis:
   threshold:
     cpu_upper_threshold: 0.8
     cpu_lower_threshold: 0.2
 
-monitoring:
-  interval: 1m #interval in grafana language
-  host: http://prometheus:9090
-
 planning:
   min_replicas: 1
   max_replicas: 20
+
+execution:
+  scaling_endpoint: http://scaler/scale
