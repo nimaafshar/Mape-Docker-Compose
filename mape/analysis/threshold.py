@@ -22,7 +22,7 @@ class ThresholdAnalysis(Analysis):
         self._cpu_upper_threshold: float = cpu_upper_threshold
         self._cpu_lower_threshold: float = cpu_lower_threshold
 
-    def update(self, cycle: int, data: Optional[SystemMonitoringData]) -> Optional[ThresholdAnalysisData]:
+    def update(self, cycle: int, data: Optional[SystemMonitoringData]) -> ThresholdAnalysisData:
         if not data.is_complete:
             raise DataInsufficiencyException(data)
         cpu_utilization: float = SystemMonitoringData.cpu_utilization
@@ -34,4 +34,4 @@ class ThresholdAnalysis(Analysis):
         else:
             result = ThresholdAnalysisResult.DO_NOT_SCALE
         logger.info(f'threshold analysis successful. [cycle:{cycle},result:{result}]')
-        return ThresholdAnalysisData(True, result)
+        return ThresholdAnalysisData(success=True, result=result, replicas=data.replicas + result)
