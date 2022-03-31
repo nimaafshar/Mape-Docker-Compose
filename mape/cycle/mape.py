@@ -1,5 +1,6 @@
 from ..monitoring import Monitoring, MonitoringData
 from ..analysis import Analysis, AnalysisData
+from ..analysis.exceptions import DataInsufficiencyException
 from ..planning import Planning, PlanningData
 from ..execution import Execution, ExecutionData
 
@@ -42,10 +43,16 @@ class MAPECycle:
         """
         monitoring_input: Optional[ExecutionData] = None
         killer = MAPECycle.GracefulKiller()
+        cycle: int = 0
         while not killer.kill_now:
             logger.info('mape cycle started.')
-            analysis_input: Optional[MonitoringData] = self._monitoring.update(monitoring_input)
-            planning_input: Optional[AnalysisData] = self._analysis.update(analysis_input)
-            execution_input: Optional[PlanningData] = self._planning.update(planning_input)
-            monitoring_input = self._execution.update(execution_input)
+            try:
+                analysis_input: Optional[MonitoringData] = self._monitoring.update(cycle, monitoring_input)
+                planning_input: Optional[AnalysisData] = self._analysis.update(cycle, analysis_input)
+                execution_input: Optional[PlanningData] = self._planning.update(cycle, planning_input)
+                monitoring_input = self._execution.update(cycle, execution_input)
+            except DataInsufficiencyException as e:
+                logger.error(f'DataInsufficiencyException {e}')
+                logger.info(f'skipping cycle {cycle}')
+            cycle += 1
         logger.info('mape cycle ended.')
