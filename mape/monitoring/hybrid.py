@@ -15,11 +15,5 @@ class HybridMonitoring(SystemMonitoring, APIMonitoring):
         api_data: APIMonitoringData = APIMonitoring.update(self, cycle, data)
         return HybridMonitoringData(
             cycle,
-            sys_data.cpu_utilization,
-            sys_data.memory_utilization,
-            sys_data.replicas,
-            api_data.avg_response_time,
-            api_data.avg_data_length,
-            api_data.avg_rps,
-            api_data.sensor_count
-        )
+            sys_data,
+            api_data)
