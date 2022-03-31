@@ -3,4 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class ExecutionData:
-    pass
+    """
+    Args:
+        success (bool): if scaling was successful.
+    """
+    success: bool
