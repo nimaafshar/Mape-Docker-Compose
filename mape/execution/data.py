@@ -5,6 +5,6 @@ from dataclasses import dataclass
 class ExecutionData:
     """
     Args:
-        success (bool): if scaling was successful.
+        success (bool): if execution was successful.
     """
     success: bool
