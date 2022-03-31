@@ -1,149 +1,53 @@
 import numpy as np
-from pymoo.algorithms.moo.nsga2 import NSGA2
-from pymoo.factory import get_problem, get_termination
-from pymoo.optimize import minimize
 from pymoo.core.problem import Problem
-
-from dataclasses import dataclass
-
-
-@dataclass
-class EconomicAdaptationParameters:
-    """
-    parameters of the economic adaptation problem that are constant throughout the program
-    Args:
-        p_i (float): cost of a virtual machine in dollars per second, positive
-        p_n (float): cost of data transfer in dollars per KB, positive
-        H (float): static hosting cost in dollars per second
-        RPM (float): revenue per 1000 ads in dollars
-        gamma_l (float): lower bound for average number of ads per page
-        gamma_u (float): upper bound for average number of ads per page
-        R_l (int): response time lower bound (milliseconds) for single VM
-        R_u (int): response time upper bound (milliseconds) for single VM
-        d_l (int): lower bound for capacity of each VM (requests/s)
-        d_u (int): upper bound for capacity of each VM (requests/s)
-        W_a (float): weight of the application in pareto front choosing strategy
-        W_s (float): weight of the service in pareto front choosing strategy
-        W_u (float): weight of the user in pareto front choosing strategy
-    """
-    p_i: float
-    p_n: float
-    H: float
-    RPM: float
-    gamma_l: int
-    gamma_u: int
-    R_l: int
-    R_u: int
-    d_l: int
-    d_u: int
-    W_a: float
-    W_s: float
-    W_u: float
-
-
-"""
-changing parameters:
-Lambda: 50 # request arrival rate (req/s)
-    n: 10 # average payload for each response (KB)
-  #R: average response time
-"""
+from .data import EconomicAdaptationParameters
 
 
 class EconomicAdaptationProblem(Problem):
-    """
-    response times are filled based on papers values(page8-table1)
-    """
 
-    def __init__(self,
-                 landa=50,  # arrival rate (req/s)
-                 n=10,  # average data payload for each request (KB)
-                 p_i=2.64E-04,  # cost of a VM ($/s)
-                 p_n=3.50E-06,  # cost of data transfer ($/KB)
-                 H=8.50E-05,  # static Hosting cost ($/s)
-                 RPM=0.7,  # revenue per 1000 ads ($)
-                 R=100,  # response time (ms)
-                 gamma_l=1,  # gamma lower bound (gamma is average number of ad banners per page)
-                 gamma_u=10,  # gamma upper bound
-                 R_l=45,  # respose time lower bound
-                 R_u=200,  # response time upper bound
-                 d_l=15,  # capacity of each VM lower bound(request/s)
-                 d_u=21  # capacity of each VM upper bound(request/s)
-                 ):
-        self.landa = landa
-        self.n = n
-        self.p_i = p_i
-        self.p_n = p_n
-        self.H = H
-        self.RPM = RPM
-        self.R = R
-        self.gamma_l = gamma_l
-        self.gamma_u = gamma_u
-        self.R_l = R_l
-        self.R_u = R_u
-        self.d_l = d_l
-        self.d_u = d_u
-        # weights in user satisfaction formula
-        self.a = 0.5
-        self.b = 0.5
-        # p_s doesn't have any bound so we should feed algorithm
-        # a very high number for upper bound and 0 (logically) for lower bound
+    def __init__(self, params: EconomicAdaptationParameters, _lambda: float, n: float, r: float):
+        """
+        Args:
+            params (EconomicAdaptationParameters): constant parameters in all
+            _lambda (float): arrival rate (req/s)
+            n (float): average data payload for each request (KB)
+            r (float): response time (ms)
+        """
+        self._params: EconomicAdaptationParameters = params
+        self._lambda: float = _lambda
+        self._n: float = n
+        self._r: float = r
+        # weights in user satisfaction formula todo: investigate more in paper
+        self._a = 0.5
+        self._b = 0.5
+        # p_s doesn't have any bound, so we should feed algorithm
+        # a very high number for upper bound and 0 for lower bound
         super().__init__(n_var=3,  # p_s,W,gamma
                          n_obj=3,  # pi_s,pi_a,U
                          n_constr=4,
-                         xl=np.array([0, landa / d_u, gamma_l]),
-                         xu=np.array([10000, landa / d_l, gamma_u]))
+                         #            | investigate this
+                         xl=np.array([0, _lambda / self._params.d_u, self._params.gamma_l]),
+                         xu=np.array([10000, _lambda / self._params.d_l, self._params.gamma_u]))
 
     def _evaluate(self, x, out, *args, **kwargs):
         # objectives
         # to maximize objectives we multipy them by -1 and then minimize them
         # objectives are not normalized. todo: test normalization on results
-        d = self.landa / x[:, 1]
-        rel_d = (d - self.d_l) / (self.d_u - self.d_l)
-        R = ((self.R_u - self.R_l) * rel_d) + self.R_l
-        pi_s = x[:, 0] * self.landa - self.p_i * x[:, 1] - self.n * self.p_n * self.landa
-        pi_a = (x[:, 2] * self.RPM / 1000) * self.landa - self.H * self.landa - x[:, 0] * self.landa
-        U = self.a * ((self.gamma_u - x[:, 2]) / (self.gamma_u - self.gamma_l)) + self.b * (
-                (self.R_u - R) / (self.R_u - self.R_l))
+        d = self._lambda / x[:, 1]
+        rel_d = (d - self._params.d_l) / (self._params.d_u - self._params.d_l)
+        R = ((self._params.R_u - self._params.R_l) * rel_d) + self._params.R_l
+        pi_s = x[:, 0] * self._lambda - self._params.p_i * x[:, 1] - self._n * self._params.p_n * self._lambda
+        pi_a = (x[:, 2] * self._params.RPM / 1000) * self._lambda - self._params.H * self._lambda - x[:,
+                                                                                                    0] * self._lambda
+        U = self._a * ((self._params.gamma_u - x[:, 2]) / (self._params.gamma_u - self._params.gamma_l)) + self._b * (
+                (self._params.R_u - R) / (self._params.R_u - self._params.R_l))
 
         out["F"] = np.column_stack([-1 * pi_s, -1 * pi_a, -1 * U])
 
-        # constrains (equations are filped in a way that they would be less than zero)
-        g1 = x[:, 0] - (x[:, 2] * self.RPM / 1000)
-        g2 = -1 * (pi_s)
-        g3 = -1 * (pi_a)
+        # constrains (equations are flipped in a way that they would be less than zero)
+        g1 = x[:, 0] - (x[:, 2] * self._params.RPM / 1000)
+        g2 = -1 * pi_s
+        g3 = -1 * pi_a
         g4 = (0.8 - U)
 
         out["G"] = np.column_stack([g1, g2, g3, g4])
-
-
-def solve_optimization_problem(problem: AdaptationProblem):
-    # defining algorithm
-    algorithm = NSGA2(
-        pop_size=1000,
-        n_offsprings=10,
-        eliminate_duplicates=True
-    )
-
-    # defining termination
-    # I chose termination criteria by looking at decrease in average cv
-    termination = get_termination('n_gen', 170)
-
-    # solving problem and getting the results
-    res = minimize(problem,
-                   algorithm,
-                   termination,
-                   seed=1,
-                   save_history=True,
-                   verbose=False
-                   )
-
-    # you can find objectives in res.F and variables in res.X
-    return res.F, res.X
-
-
-def choose_on_pf(pareto_f, design_space, w_s=0.33, w_a=0.33, w_u=0.33):
-    max_values = np.max(pareto_f, axis=0)
-    arg_max = np.argmax(
-        pareto_f[:, 0] * w_s / max_values[0] + pareto_f[:, 1] * w_a / max_values[1] + pareto_f[:, 2] * w_u / max_values[
-            2])
-    return tuple(design_space[arg_max])
