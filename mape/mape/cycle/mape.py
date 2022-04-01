@@ -47,8 +47,8 @@ class MAPECycle:
         killer = GracefulKiller()
         cycle: int = 0
         while not killer.kill_now:
+            logger.info(f'mape cycle started. waiting for {self._interval}')
             time.sleep(self._interval.total_seconds())
-            logger.info('mape cycle started.')
             try:
                 analysis_input: Optional[MonitoringData] = self._monitoring.update(cycle, monitoring_input)
                 planning_input: Optional[AnalysisData] = self._analysis.update(cycle, analysis_input)
