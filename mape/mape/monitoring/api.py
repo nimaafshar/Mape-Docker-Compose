@@ -33,7 +33,7 @@ class APIMonitoring(PrometheusMonitoring):
         query: str = f'rate(iotwg_web_response_time_sum[{self._interval}])/' + \
                      f'rate(iotwg_web_response_time_count[{self._interval}])'
         result = self._query_instant_metric(query)
-        return None if result is None else int(result)
+        return None if result is None else float(result)
 
     def _query_avg_request_length(self) -> Optional[float]:
         """
@@ -53,5 +53,3 @@ class APIMonitoring(PrometheusMonitoring):
             self._query_avg_rps(),
             self._query_sensor_count()
         )
-
-
