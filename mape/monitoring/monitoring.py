@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Optional, Dict, List
-
+from logging import getLogger
 import requests
 
 from mape.cycle import CycleStep
 from mape.execution.data import ExecutionData
 from .data import MonitoringData
+
+logger = getLogger()
 
 
 class Monitoring(CycleStep, ABC):
@@ -41,7 +43,8 @@ class PrometheusMonitoring(Monitoring, ABC):
         """
         try:
             response = requests.get(self._host, {'query': querystring})
-        except ConnectionError:
+        except requests.exceptions.ConnectionError as e:
+            logger.error(f"connection error while monitoring:{e}")
             return None
         if response.status_code >= 300 or response.status_code <= 200:
             return None
