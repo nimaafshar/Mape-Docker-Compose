@@ -26,8 +26,8 @@ class SystemMonitoring(PrometheusMonitoring):
         returns None in case of connection problems or absence of data
         """
         query: str = 'sum(rate(container_cpu_usage_seconds_total' + \
-                     '{container_label_com_docker_compose_service="' + self._service_name + '"}[{' + self._interval \
-                     + '}]))/sum(container_spec_cpu_quota/' + \
+                     '{container_label_com_docker_compose_service="' + self._service_name + '"}[' + self._interval \
+                     + ']))/sum(container_spec_cpu_quota/' + \
                      'container_spec_cpu_period{container_label_com_docker_compose_service="' \
                      + self._service_name + '"})'
 
