@@ -57,7 +57,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 100M
+          memory: 200M
 
   nginx-proxy:
     image: nginxproxy/nginx-proxy
