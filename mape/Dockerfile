@@ -12,5 +12,5 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD [ "python","/app/driver.py"]
+CMD [ "python","-u","/app/driver.py"]
 

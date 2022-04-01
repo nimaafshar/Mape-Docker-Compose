@@ -1,3 +1,5 @@
+import logging
+
 import yaml
 from logging import getLogger
 
@@ -7,6 +9,7 @@ from mape.cycle.mape import MAPECycle
 from prometheus_client import start_http_server
 
 logger = getLogger()
+logger.setLevel(logging.DEBUG)
 
 
 def main():
