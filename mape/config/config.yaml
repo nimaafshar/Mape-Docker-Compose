@@ -13,7 +13,7 @@ optimization:
 
   solve: # solver settings + objective weights
     pop_size: 1000
-    n_offsprings: 10
+    n_offsprings: 100
     eliminate_duplicates: true
     termination_generation: 250
     max_tries: 10
@@ -24,7 +24,7 @@ optimization:
 
 monitoring:
   interval: 1m #interval in grafana language
-  host: http://prometheus:9090/api/v1/query
+  host: http://206.12.95.98:9090/api/v1/query
   service_name: web
 
 analysis:

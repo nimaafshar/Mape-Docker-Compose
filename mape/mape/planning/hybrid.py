@@ -42,26 +42,31 @@ class HybridPlanning(Planning):
                     logger.info(f"economic analysis was not successful. taking no planning decision.[cycle:{cycle}]")
                     return PlanningData(replicate=False, replicas=None)
             else:
-                economic_decision: int = self._get_economic_scaling_decision(data.economic.result)
                 threshold_decision: int = data.threshold.replicas
-                if data.threshold.result == ThresholdAnalysisResult.SCALE_UP:
-                    if economic_decision >= threshold_decision:
-                        logger.info(
-                            f"favourable suggestions. scale using economic suggestion. [cycle:{cycle}]")
-                        return PlanningData(replicate=True, replicas=economic_decision)
-                    else:
-                        logger.info(
-                            f"unfavourable suggestions. scale using threshold suggestion. [cycle:{cycle}]")
-                        return PlanningData(replicate=True, replicas=threshold_decision)
-                elif data.threshold.result == ThresholdAnalysisResult.SCALE_DOWN:
-                    if economic_decision <= threshold_decision:
-                        logger.info(
-                            f"favourable suggestions. scale using economic suggestion. [cycle:{cycle}]")
-                        return PlanningData(replicate=True, replicas=economic_decision)
-                    else:
-                        logger.info(
-                            f"unfavourable suggestions. scale using threshold suggestion. [cycle:{cycle}]")
-                        return PlanningData(replicate=True, replicas=threshold_decision)
+                if data.economic.success:
+                    economic_decision: int = self._get_economic_scaling_decision(data.economic.result)
+                    if data.threshold.result == ThresholdAnalysisResult.SCALE_UP:
+                        if economic_decision >= threshold_decision:
+                            logger.info(
+                                f"favourable suggestions. scale using economic suggestion. [cycle:{cycle}]")
+                            return PlanningData(replicate=True, replicas=economic_decision)
+                        else:
+                            logger.info(
+                                f"unfavourable suggestions. scale using threshold suggestion. [cycle:{cycle}]")
+                            return PlanningData(replicate=True, replicas=threshold_decision)
+                    elif data.threshold.result == ThresholdAnalysisResult.SCALE_DOWN:
+                        if economic_decision <= threshold_decision:
+                            logger.info(
+                                f"favourable suggestions. scale using economic suggestion. [cycle:{cycle}]")
+                            return PlanningData(replicate=True, replicas=economic_decision)
+                        else:
+                            logger.info(
+                                f"unfavourable suggestions. scale using threshold suggestion. [cycle:{cycle}]")
+                            return PlanningData(replicate=True, replicas=threshold_decision)
+                else:
+                    logger.info(
+                        f"economic analysis was not successful. taking threshold planning decision.[cycle:{cycle},replicas:{threshold_decision}]")
+                    return PlanningData(replicate=False, replicas=threshold_decision)
 
     def update(self, cycle: int, data: Optional[HybridAnalysisData]) -> PlanningData:
         if data is None:

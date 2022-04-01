@@ -27,9 +27,9 @@ class ScalingExecution(Execution):
                         return ExecutionData(success=False)
                     else:
                         return ExecutionData(success=True)
-                except ConnectionError as e:
-                    logger.error(f"connection error: {e}")
+                except requests.exceptions.ConnectionError as e:
+                    logger.error(f"didn't take any action. [cycle:{cycle}, connection error: {e}]")
                     return ExecutionData(success=False)
             else:
-                logger.info(f"no scaling action planned. didn't take any action [cycle:{cycle}")
+                logger.info(f"no scaling action planned. didn't take any action [cycle:{cycle}]")
         return ExecutionData(success=False)

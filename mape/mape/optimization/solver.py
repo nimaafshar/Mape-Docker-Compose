@@ -8,18 +8,22 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.util.termination.max_gen import MaximumGenerationTermination
 from pymoo.optimize import minimize
 from pymoo.core.result import Result
+from pymoo.factory import get_termination
 
 from typing import Tuple, Optional
+from logging import getLogger
+
+logger = getLogger()
 
 
 class EconomicAdaptationProblemSolver:
     def __init__(self, solve_arguments: SolveArguments, problem_params: EconomicAdaptationParameters):
         self._args: SolveArguments = solve_arguments
         self._problem_params: EconomicAdaptationParameters = problem_params
-        self._algorithm: NSGA2 = NSGA2(solve_arguments.pop_size, solve_arguments.n_offsprings,
-                                       solve_arguments.eliminate_duplicates)
-        self._termination: MaximumGenerationTermination = MaximumGenerationTermination(
-            solve_arguments.termination_generation)
+        self._algorithm: NSGA2 = NSGA2(pop_size=solve_arguments.pop_size, n_offsprings=solve_arguments.n_offsprings,
+                                       eliminate_duplicates=solve_arguments.eliminate_duplicates)
+        self._termination: MaximumGenerationTermination = get_termination('n_gen',
+                                                                          solve_arguments.termination_generation)
 
     def _optimize(self, problem: EconomicAdaptationProblem) -> Optional[Tuple[numpy.ndarray, numpy.ndarray]]:
         """
@@ -30,9 +34,9 @@ class EconomicAdaptationProblemSolver:
             (None,None) if optimization has no result,
             otherwise (objectives, variables)
         """
-        res: Result = minimize(problem,
-                               self._algorithm,
-                               self._termination,
+        res: Result = minimize(problem=problem,
+                               algorithm=self._algorithm,
+                               termination=self._termination,
                                save_history=True,
                                verbose=False
                                )
@@ -72,9 +76,11 @@ class EconomicAdaptationProblemSolver:
             problem: EconomicAdaptationProblem = EconomicAdaptationProblem(self._problem_params, _lambda, n, r)
             objectives, variables = self._optimize(problem)
             if objectives is not None and variables is not None:
+                logger.debug(f'optimization problem solved in try:{i}')
                 break
 
         if objectives is None or variables is None:
+            logger.debug(f"couldn't find any solution. in {self._args.max_tries} tries.")
             # optimization failed
             return None
         else:

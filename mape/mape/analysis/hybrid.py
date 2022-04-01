@@ -52,8 +52,14 @@ class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
 
         logger.debug(f"System Monitoring Data: {asdict(data.system)}")
         logger.debug(f"API Monitoring Data: {asdict(data.api)}")
+
         threshold_data: ThresholdAnalysisData = ThresholdAnalysis.update(self, cycle, data.system)
-        economic_data: EconomicAnalysisData = EconomicAnalysis.update(self, cycle, data.api)
+        economic_data: Optional[EconomicAnalysisData]
+        try:
+            economic_data = EconomicAnalysis.update(self, cycle, data.api)
+        except DataInsufficiencyException:
+            economic_data = EconomicAnalysisData(success=False, result=None)
+
         if threshold_data is not None and threshold_data.success:
             self._threshold_status.state('success')
             self._threshold_decision.set(int(threshold_data.result))
