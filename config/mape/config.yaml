@@ -24,7 +24,7 @@ optimization:
 
 monitoring:
   interval: 1m #interval in grafana language
-  host: http://prometheus:9090
+  host: http://prometheus:9090/api/v1/query
   service_name: web
 
 analysis:
