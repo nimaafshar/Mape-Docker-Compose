@@ -12,7 +12,7 @@ from mape.optimization.data import SolveArguments, ParetoFrontWeights, EconomicA
 from mape.planning import HybridPlanning
 from mape.execution import ScalingExecution
 
-BASE_PATH = pathlib.Path(__file__).parent.parent.resolve()
+BASE_PATH = pathlib.Path(__file__).parent.parent.parent.resolve()
 
 logger = getLogger()
 

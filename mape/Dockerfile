@@ -10,5 +10,5 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD [ "python", "-m", "mape.driver"]
+CMD [ "python","/app/driver.py"]
 
