@@ -1,3 +1,5 @@
+import time
+
 from ..monitoring import Monitoring, MonitoringData
 from ..analysis import Analysis, AnalysisData
 from ..analysis.exceptions import DataInsufficiencyException
@@ -12,25 +14,25 @@ from typing import Optional
 logger = getLogger()
 
 
+class GracefulKiller:
+    kill_now = False
+
+    def __init__(self):
+        signal.signal(signal.SIGINT, self.exit_gracefully)
+        signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+    def exit_gracefully(self, *args):
+        logger.info('waiting for cycle to be ended before exiting gracefully.')
+        self.kill_now = True
+
+
 class MAPECycle:
     """
     MAPE Cycle consists of 4 steps: monitoring, analysis, planning, execution
     """
 
-    class GracefulKiller:
-        kill_now = False
-
-        def __init__(self):
-            signal.signal(signal.SIGINT, self.exit_gracefully)
-            signal.signal(signal.SIGTERM, self.exit_gracefully)
-
-        def exit_gracefully(self, *args):
-            logger.info('waiting for cycle to be ended before exiting gracefully.')
-            self.kill_now = True
-
-    def __int__(self,
-                monitoring_step: Monitoring, analysis_step: Analysis, planning_step: Planning,
-                execution_step: Execution, interval: datetime.timedelta):
+    def __init__(self, monitoring_step: Monitoring, analysis_step: Analysis, planning_step: Planning,
+                 execution_step: Execution, interval: datetime.timedelta):
         self._monitoring: Monitoring = monitoring_step
         self._analysis: Analysis = analysis_step
         self._planning: Planning = planning_step
@@ -42,9 +44,10 @@ class MAPECycle:
         running mape cycle
         """
         monitoring_input: Optional[ExecutionData] = None
-        killer = MAPECycle.GracefulKiller()
+        killer = GracefulKiller()
         cycle: int = 0
         while not killer.kill_now:
+            time.sleep(self._interval.total_seconds())
             logger.info('mape cycle started.')
             try:
                 analysis_input: Optional[MonitoringData] = self._monitoring.update(cycle, monitoring_input)
