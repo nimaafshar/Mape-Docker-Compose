@@ -9,6 +9,10 @@ from .data import EconomicAnalysisData, ThresholdAnalysisData, HybridAnalysisDat
 from .exceptions import DataInsufficiencyException
 
 from prometheus_client import Gauge, Enum
+from logging import getLogger
+from dataclasses import asdict
+
+logger = getLogger()
 
 
 class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
@@ -45,6 +49,9 @@ class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
     def update(self, cycle: int, data: Optional[HybridMonitoringData]) -> Optional[AnalysisData]:
         if data is None:
             raise DataInsufficiencyException(data)
+
+        logger.debug(f"System Monitoring Data: {asdict(data.system)}")
+        logger.debug(f"API Monitoring Data: {asdict(data.api)}")
         threshold_data: ThresholdAnalysisData = ThresholdAnalysis.update(self, cycle, data.system)
         economic_data: EconomicAnalysisData = EconomicAnalysis.update(self, cycle, data.api)
         if threshold_data is not None and threshold_data.success:
