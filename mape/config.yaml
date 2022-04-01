@@ -25,6 +25,7 @@ optimization:
 monitoring:
   interval: 1m #interval in grafana language
   host: http://prometheus:9090
+  service_name: web
 
 analysis:
   threshold:
@@ -37,3 +38,6 @@ planning:
 
 execution:
   scaling_endpoint: http://scaler/scale
+
+mape:
+  interval: 60 #in seconds
