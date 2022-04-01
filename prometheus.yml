@@ -24,6 +24,11 @@ scrape_configs:
       - targets:
           - iot:8000
 
+  - job_name: economic_mape
+    static_configs:
+      - targets:
+          - mape:8000
+
 #  - job_name: node
 #    static_configs:
 #    - targets: ['node-exporter:9100']
