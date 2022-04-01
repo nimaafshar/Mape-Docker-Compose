@@ -21,7 +21,7 @@ class EconomicAnalysis(Analysis):
     def update(self, cycle: int, data: Optional[APIMonitoringData]) -> EconomicAnalysisData:
         if not data.is_complete:
             raise DataInsufficiencyException(data)
-        result: Optional[EconomicAdaptationResults] = self._solver.solve(data.avg_rps, data.avg_data_length,
+        result: Optional[EconomicAdaptationResults] = self._solver.solve(data.avg_rps, data.avg_data_length / 1000,
                                                                          data.avg_response_time)
         if result is None:
             logger.error(f'economic analysis unsuccessful. [cycle:{cycle}]')
