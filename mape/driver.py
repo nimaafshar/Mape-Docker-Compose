@@ -4,10 +4,13 @@ from logging import getLogger
 from utils import Factory, BASE_PATH
 from cycle import MAPECycle
 
+from prometheus_client import start_http_server
+
 logger = getLogger()
 
 
 def main():
+    start_http_server(8000)
     with open(BASE_PATH / 'config.yaml', 'r') as config_file:
         total_config: dict = yaml.load(config_file, Loader=yaml.SafeLoader)
     logger.info('configuration loaded.')
