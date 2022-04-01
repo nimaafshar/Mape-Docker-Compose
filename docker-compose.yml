@@ -44,6 +44,21 @@ services:
         limits:
           memory: 100M
 
+  mape:
+    image: ghcr.io/nimaafshar/mape:latest
+    pull_policy: always
+    depends_on:
+      - prometheus
+      - iot
+    expose:
+      - "8000"
+    volumes:
+      - ./config/mape/config.yaml:/app/config.yaml
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+
   nginx-proxy:
     image: nginxproxy/nginx-proxy
     depends_on:
