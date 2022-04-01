@@ -1,15 +1,16 @@
 import datetime
 from typing import Optional
-import json
 import pathlib
+import yaml
+
 from logging import getLogger
 from jsonschema import validate, ValidationError
-from ..monitoring import HybridMonitoring
-from ..analysis import HybridAnalysis
-from ..optimization import EconomicAdaptationProblemSolver
-from ..optimization.data import SolveArguments, ParetoFrontWeights, EconomicAdaptationParameters
-from ..planning import HybridPlanning
-from ..execution import ScalingExecution
+from mape.monitoring import HybridMonitoring
+from mape.analysis import HybridAnalysis
+from mape.optimization import EconomicAdaptationProblemSolver
+from mape.optimization.data import SolveArguments, ParetoFrontWeights, EconomicAdaptationParameters
+from mape.planning import HybridPlanning
+from mape.execution import ScalingExecution
 
 BASE_PATH = pathlib.Path(__file__).parent.parent.resolve()
 
@@ -29,7 +30,7 @@ class Factory:
         self._config = config
         if Factory._config_schema is None:
             with open(BASE_PATH / 'config_schema.yaml', 'r') as schema_file:
-                Factory._config_schema = json.load(schema_file)
+                Factory._config_schema = yaml.load(schema_file, Loader=yaml.SafeLoader)
         try:
             validate(config, Factory._config_schema)
         except ValidationError as e:

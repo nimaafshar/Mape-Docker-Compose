@@ -1,10 +1,10 @@
 import time
 
-from ..monitoring import Monitoring, MonitoringData
-from ..analysis import Analysis, AnalysisData
-from ..analysis.exceptions import DataInsufficiencyException
-from ..planning import Planning, PlanningData
-from ..execution import Execution, ExecutionData
+from mape.monitoring import Monitoring, MonitoringData
+from mape.analysis import Analysis, AnalysisData
+from mape.analysis.exceptions import DataInsufficiencyException
+from mape.planning import Planning, PlanningData
+from mape.execution import Execution, ExecutionData
 
 import signal
 import datetime

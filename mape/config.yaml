@@ -19,7 +19,7 @@ optimization:
     max_tries: 10
     weights:
       application: 0.33
-      serivce: 0.33
+      service: 0.33
       user: 0.33
 
 monitoring:

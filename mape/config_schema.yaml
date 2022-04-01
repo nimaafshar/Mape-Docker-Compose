@@ -36,7 +36,7 @@ examples:
             termination_generation: 250
             weights:
                 application: 0.33
-                serivce: 0.33
+                service: 0.33
                 user: 0.33
     planning:
         max_replicas: 20
@@ -191,7 +191,7 @@ properties:
                 termination_generation: 250
                 weights:
                     application: 0.33
-                    serivce: 0.33
+                    service: 0.33
                     user: 0.33
         properties:
             problem:
@@ -317,7 +317,7 @@ properties:
                     termination_generation: 250
                     weights:
                         application: 0.33
-                        serivce: 0.33
+                        service: 0.33
                         user: 0.33
                 properties:
                     eliminate_duplicates:
@@ -367,7 +367,7 @@ properties:
                         description: An explanation about the purpose of this instance.
                         examples:
                         -   application: 0.33
-                            serivce: 0.33
+                            service: 0.33
                             user: 0.33
                         properties:
                             application:
@@ -379,14 +379,14 @@ properties:
                                 - 0.33
                                 title: The application schema
                                 type: number
-                            serivce:
-                                $id: '#/properties/optimization/properties/solve/properties/weights/properties/serivce'
+                            service:
+                                $id: '#/properties/optimization/properties/solve/properties/weights/properties/service'
                                 default: 0.0
                                 description: An explanation about the purpose of this
                                     instance.
                                 examples:
                                 - 0.33
-                                title: The serivce schema
+                                title: The service schema
                                 type: number
                             user:
                                 $id: '#/properties/optimization/properties/solve/properties/weights/properties/user'
@@ -399,7 +399,7 @@ properties:
                                 type: number
                         required:
                         - application
-                        - serivce
+                        - service
                         - user
                         title: The weights schema
                         type: object

@@ -2,7 +2,7 @@ import yaml
 from logging import getLogger
 
 from utils import Factory, BASE_PATH
-from cycle import MAPECycle
+from mape.cycle.mape import MAPECycle
 
 from prometheus_client import start_http_server
 

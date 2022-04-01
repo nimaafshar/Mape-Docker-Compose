@@ -3,8 +3,8 @@ from typing import Optional, Dict, List
 
 import requests
 
-from ..cycle import CycleStep
-from ..execution.data import ExecutionData
+from mape.cycle import CycleStep
+from mape.execution.data import ExecutionData
 from .data import MonitoringData
 
 

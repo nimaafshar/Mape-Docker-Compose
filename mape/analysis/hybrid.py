@@ -25,7 +25,7 @@ class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
         ThresholdAnalysis.__init__(self, cpu_upper_threshold, cpu_lower_threshold)
         self._threshold_status: Enum = Enum('mape_threshold_analysis_status',
                                             'if threshold analysis was successful',
-                                            labelnames=('success', 'fail'))
+                                            states=('success', 'fail'))
         self._threshold_decision: Gauge = Gauge('mape_threshold_analysis_decision',
                                                 'MAPE threshold analysis decision, scale up = +1,'
                                                 'scale down = -1, do nothing = 0')
@@ -34,7 +34,7 @@ class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
 
         self._economic_status: Enum = Enum('mape_economic_analysis_status',
                                            'if economic analysis was successful',
-                                           labelnames=('success', 'fail'))
+                                           states=('success', 'fail'))
         self._economic_service_price: Gauge = Gauge('mape_economic_analysis_service_price',
                                                     'MAPE Economic Analysis suggested p_s (service price)')
         self._economic_replicas: Gauge = Gauge('mape_economic_analysis_replicas',
