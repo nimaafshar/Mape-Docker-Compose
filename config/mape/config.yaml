@@ -13,7 +13,7 @@ optimization:
 
   solve: # solver settings + objective weights
     pop_size: 1000
-    n_offsprings: 10
+    n_offsprings: 100
     eliminate_duplicates: true
     termination_generation: 250
     max_tries: 10
