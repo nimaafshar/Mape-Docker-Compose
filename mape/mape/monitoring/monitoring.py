@@ -47,13 +47,22 @@ class PrometheusMonitoring(Monitoring, ABC):
             logger.error(f"connection error while monitoring:{e}")
             return None
         if response.status_code >= 300 or response.status_code <= 200:
+            logger.debug(
+                f"invalid status code while monitoring:[code:{response.status_code},content:{response.content}]")
             return None
         content: Dict = response.json()
         if content.get('status') != 'success':
+            logger.debug(
+                f"querying was not successful:[content:{response.content}]")
             return None
         if content.get('data') is None:
+            logger.debug(
+                f"response doesn't contain key 'data':[content:{response.content}]")
             return None
         result = content.get('data').get('result', None)
         if result is None or len(result) == 0:
+            logger.debug(
+                f"response doesn't contain key ['data']['result'] or result doesn't have enough elements:"
+                f"[content:{response.content}]")
             return None
         return result[0]['value'][1]
