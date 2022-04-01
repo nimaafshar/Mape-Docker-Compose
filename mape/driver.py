@@ -17,7 +17,7 @@ def main():
     start_http_server(8000)
     with open(BASE_PATH / 'config' / 'config.yaml', 'r') as config_file:
         total_config: dict = yaml.load(config_file, Loader=yaml.SafeLoader)
-    logger.info('configuration loaded.')
+    logger.info(f"configuration loaded from {(BASE_PATH / 'config' / 'config.yaml').absolute()}.")
     factory: Factory = Factory(total_config)
     cycle: MAPECycle = MAPECycle(
         factory.get_hybrid_monitoring(),
