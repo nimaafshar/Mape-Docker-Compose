@@ -46,7 +46,7 @@ class PrometheusMonitoring(Monitoring, ABC):
         except requests.exceptions.ConnectionError as e:
             logger.error(f"connection error while monitoring:{e}")
             return None
-        if response.status_code >= 300 or response.status_code <= 200:
+        if response.status_code >= 300 or response.status_code < 200:
             logger.debug(
                 f"invalid status code while monitoring:[code:{response.status_code},content:{response.content}]")
             return None
