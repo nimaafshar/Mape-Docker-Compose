@@ -37,7 +37,7 @@ planning:
   max_replicas: 20
 
 execution:
-  scaling_endpoint: http://scaler/scale
+  scaling_endpoint: http://host.docker.internal:5000/scale
 
 mape:
   interval: 60 #in seconds
