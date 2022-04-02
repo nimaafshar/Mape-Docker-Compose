@@ -24,8 +24,9 @@ services:
           memory: 200M
     logging:
       driver: none
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    network_mode: "host"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway" #172.17.0.1 is the ip of the host
 
   iot:
     image: ghcr.io/nimaafshar/workload-generator-iot:latest
