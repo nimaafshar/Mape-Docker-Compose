@@ -24,7 +24,7 @@ optimization:
 
 monitoring:
   interval: 1m #interval in grafana language
-  host: http://prometheus:9090/api/v1/query
+  host: http://206.12.95.98:9090/api/v1/query
   service_name: web
 
 analysis:
@@ -37,7 +37,7 @@ planning:
   max_replicas: 20
 
 execution:
-  scaling_endpoint: http://host.docker.internal:5000/scale
+  scaling_endpoint: http://localhost:5000/scale
 
 mape:
   interval: 60 #in seconds
