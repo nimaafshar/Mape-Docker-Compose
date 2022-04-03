@@ -26,7 +26,7 @@ class ScalingExecution(Execution):
             logger.info(f"no planning data. didn't take any action [cycle:{cycle}")
         else:
             logger.debug('command:' + ' '.join(
-                ['sudo', 'docker-compose', '-f', self._compose_file_path.absolute(), 'up', '--scale',
+                ['sudo', 'docker-compose', '-f', str(self._compose_file_path.absolute()), 'up', '--scale',
                  f'{self._service_name}={data.replicas}', '-d']))
             if data.replicate:
                 result: subprocess.CompletedProcess = subprocess.run(
