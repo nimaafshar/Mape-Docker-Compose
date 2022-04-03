@@ -55,7 +55,7 @@ services:
     volumes:
       - ./config/mape/:/app/config/
     extra_hosts:
-      - "host.docker.internal:127.0.0.1"
+      - "host.docker.internal:host-gateway"
 #    deploy:
 #      resources:
 #        limits:
@@ -127,6 +127,7 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
     depends_on:
       - cadvisor
     deploy:
@@ -134,18 +135,19 @@ services:
         limits:
           memory: 200M
 
-  nginx:
-    build: ./nginx
-    ports:
-      - "80:80"
-      - "9090:9090"
-    depends_on:
-      - grafana
-      - prometheus
-    deploy:
-      resources:
-        limits:
-          memory: 50M
+#  nginx:
+#    build: ./nginx
+#    ports:
+#      - "80:80"
+#      - "9090:9090"
+#      - "5005:5005"
+#    depends_on:
+#      - grafana
+#      - prometheus
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 50M
 
   grafana:
     image: grafana/grafana:7.3.6
@@ -167,6 +169,7 @@ services:
 
 volumes:
   grafana_volume:
+  prometheus_data:
 
 
 
