@@ -45,9 +45,9 @@ class SystemMonitoringData(MonitoringData):
     def __post_init__(self):
         super(SystemMonitoringData, self).__post_init__()
         if self.cpu_utilization is not None:
-            assert 0 <= self.cpu_utilization <= 1, 'cpu utilization is a fraction'
+            assert 0 <= self.cpu_utilization <= 1, f'cpu utilization is a fraction. got {self.memory_utilization}'
         if self.memory_utilization is not None:
-            assert 0 <= self.memory_utilization <= 1, 'memory utilization is a fraction'
+            assert 0 <= self.memory_utilization <= 1, f'memory utilization is a fraction. got {self.memory_utilization}'
         if self.replicas is not None:
             assert isinstance(self.replicas, int) > 0 and self.replicas > 0, 'replicas is a positive number'
 
