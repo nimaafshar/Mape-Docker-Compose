@@ -54,9 +54,8 @@ services:
       - "8000"
     volumes:
       - ./config/mape/:/app/config/
-    network_mode: "host"
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
+    extra_hosts:
+      - "host.docker.internal:127.0.0.1"
 #    deploy:
 #      resources:
 #        limits:
