@@ -135,19 +135,19 @@ services:
         limits:
           memory: 200M
 
-#  nginx:
-#    build: ./nginx
-#    ports:
-#      - "80:80"
-#      - "9090:9090"
-#      - "5005:5005"
-#    depends_on:
-#      - grafana
-#      - prometheus
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 50M
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "9090:9090"
+      - "5005:5005"
+    depends_on:
+      - grafana
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 50M
 
   grafana:
     image: grafana/grafana:7.3.6
