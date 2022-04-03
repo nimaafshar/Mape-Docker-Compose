@@ -44,23 +44,6 @@ services:
         limits:
           memory: 100M
 
-#  mape:
-#    image: ghcr.io/nimaafshar/mape:latest
-#    pull_policy: always
-#    depends_on:
-#      - prometheus
-#      - iot
-#    expose:
-#      - "8000"
-#    volumes:
-#      - ./config/mape/:/app/config/
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 200M
-
   nginx-proxy:
     image: nginxproxy/nginx-proxy
     depends_on:
