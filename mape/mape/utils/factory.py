@@ -62,7 +62,8 @@ class Factory:
         return HybridPlanning(**self._config['planning'])
 
     def get_scaling_execution(self) -> ScalingExecution:
-        return ScalingExecution(**self._config['execution'])
+        return ScalingExecution(self._config['execution']['service_name'],
+                                pathlib.Path(self._config['execution']['compose_path']))
 
     def get_mape_interval(self) -> datetime.timedelta:
         return datetime.timedelta(seconds=self._config['mape']['interval'])

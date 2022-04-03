@@ -37,7 +37,8 @@ planning:
   max_replicas: 20
 
 execution:
-  scaling_endpoint: http://localhost:5000/scale
+  service_name: web
+  compose_path: ~/Economicmape/docker-com-pose.yml
 
 mape:
   interval: 60 #in seconds

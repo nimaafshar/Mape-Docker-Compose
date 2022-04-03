@@ -1,6 +1,8 @@
+import pathlib
 from typing import Optional
 from logging import getLogger
 import requests
+import subprocess
 
 from . import ExecutionData
 from .execution import Execution
@@ -10,26 +12,29 @@ logger = getLogger()
 
 
 class ScalingExecution(Execution):
-    def __init__(self, scaling_endpoint: str):
-        self._scaling_endpoint: str = scaling_endpoint
+    def __init__(self, service_name: str, compose_path: pathlib.Path):
+        """
+        Args:
+            service_name(str): the service name you want to scale using docker-compose
+            compose_path(pathlib.Path): docker compose file path
+        """
+        self._service_name: str = service_name
+        self._compose_file_path: pathlib.Path = compose_path
 
     def update(self, cycle: int, data: Optional[PlanningData]) -> Optional[ExecutionData]:
         if data is None:
             logger.info(f"no planning data. didn't take any action [cycle:{cycle}")
         else:
             if data.replicate:
-                try:
-                    response: requests.Response = requests.post(self._scaling_endpoint,
-                                                                json={'replicas': data.replicas})
-                    if response.status_code != 200:
-                        logger.error(
-                            f"error in scaling request: [cycle:{cycle},status:{response.status_code},content:{response.content}]")
-                        return ExecutionData(success=False)
-                    else:
-                        return ExecutionData(success=True)
-                except requests.exceptions.ConnectionError as e:
-                    logger.error(f"didn't take any action. [cycle:{cycle}, connection error: {e}]")
+                result: subprocess.CompletedProcess = subprocess.run(
+                    ['sudo', 'docker-compose', '-f', self._compose_file_path.absolute(), 'up', ' -d', '--scale',
+                     f'{self._service_name} = {data.replicas}'], capture_output=True)
+                if result.returncode != 0:
+                    logger.error(
+                        f"error in scaling subprocess: [cycle:{cycle},stdout:{result.stdout},stderr:{result.stderr}]")
                     return ExecutionData(success=False)
+                else:
+                    return ExecutionData(success=True)
             else:
                 logger.info(f"no scaling action planned. didn't take any action [cycle:{cycle}]")
         return ExecutionData(success=False)
