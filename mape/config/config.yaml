@@ -38,7 +38,7 @@ planning:
 
 execution:
   service_name: web
-  compose_path: ~/Economicmape/docker-compose.yml
+  compose_path: /home/ubuntu/EconomicMape/docker-compose.yml
 
 mape:
   interval: 60 #in seconds
