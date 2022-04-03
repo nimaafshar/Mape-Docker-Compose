@@ -28,7 +28,7 @@ class ScalingExecution(Execution):
             if data.replicate:
                 result: subprocess.CompletedProcess = subprocess.run(
                     ['sudo', 'docker-compose', '-f', self._compose_file_path.absolute(), 'up', '--scale',
-                     f'{self._service_name} = {data.replicas}', ' -d'], capture_output=True)
+                     f'{self._service_name}={data.replicas}', ' -d'], capture_output=True)
                 if result.returncode != 0:
                     logger.error(
                         f"error in scaling subprocess: [cycle:{cycle},stdout:{result.stdout},stderr:{result.stderr}]")
