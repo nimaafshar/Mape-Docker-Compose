@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 893,
   "graphTooltip": 1,
-  "iteration": 1648591165348,
+  "iteration": 1649003382906,
   "links": [],
   "panels": [
     {
@@ -2525,7 +2525,7 @@
       ],
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{name=~\".+\"}  * 100 / container_spec_memory_limit_bytes{name=~\".+\"}) by (container_label_com_docker_compose_service) ",
+          "expr": "sum(container_memory_usage_bytes{name=~\".+\"}  * 100) by (container _label_com_docker_compose_service)  / sum(container_spec_memory_limit_bytes{name=~\".+\"}) by (container_label_com_docker_compose_service)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{container_label_com_docker_compose_service}}",
@@ -2550,7 +2550,7 @@
           "step": 240
         }
       ],
-      "title": "Memory Utilization",
+      "title": "Memory Utilization Per service",
       "transform": "timeseries_aggregations",
       "type": "table-old"
     },
@@ -2917,5 +2917,5 @@
   "timezone": "browser",
   "title": "Docker and system monitoring",
   "uid": "8TmXFdP7k",
-  "version": 2
+  "version": 3
 }
