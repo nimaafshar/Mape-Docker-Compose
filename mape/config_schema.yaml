@@ -9,11 +9,12 @@ examples:
             cpu_lower_threshold: 0.2
             cpu_upper_threshold: 0.8
     execution:
-        scaling_endpoint: http://scaler/scale
+        compose_path: ~/Economicmape/docker-compose.yml
+        service_name: web
     mape:
         interval: 60
     monitoring:
-        host: http://prometheus:9090
+        host: http://206.12.95.98:9090/api/v1/query
         interval: 1m
         service_name: web
     optimization:
@@ -31,7 +32,7 @@ examples:
         solve:
             eliminate_duplicates: true
             max_tries: 10
-            n_offsprings: 10
+            n_offsprings: 100
             pop_size: 1000
             termination_generation: 250
             weights:
@@ -92,18 +93,28 @@ properties:
         default: {}
         description: An explanation about the purpose of this instance.
         examples:
-        -   scaling_endpoint: http://scaler/scale
+        -   compose_path: ~/Economicmape/docker-compose.yml
+            service_name: web
         properties:
-            scaling_endpoint:
-                $id: '#/properties/execution/properties/scaling_endpoint'
+            compose_path:
+                $id: '#/properties/execution/properties/compose_path'
                 default: ''
                 description: An explanation about the purpose of this instance.
                 examples:
-                - http://scaler/scale
-                title: The scaling_endpoint schema
+                - ~/Economicmape/docker-compose.yml
+                title: The compose_path schema
+                type: string
+            service_name:
+                $id: '#/properties/execution/properties/service_name'
+                default: ''
+                description: An explanation about the purpose of this instance.
+                examples:
+                - web
+                title: The service_name schema
                 type: string
         required:
-        - scaling_endpoint
+        - service_name
+        - compose_path
         title: The execution schema
         type: object
     mape:
@@ -132,7 +143,7 @@ properties:
         default: {}
         description: An explanation about the purpose of this instance.
         examples:
-        -   host: http://prometheus:9090
+        -   host: http://206.12.95.98:9090/api/v1/query
             interval: 1m
             service_name: web
         properties:
@@ -141,7 +152,7 @@ properties:
                 default: ''
                 description: An explanation about the purpose of this instance.
                 examples:
-                - http://prometheus:9090
+                - http://206.12.95.98:9090/api/v1/query
                 title: The host schema
                 type: string
             interval:
@@ -186,7 +197,7 @@ properties:
             solve:
                 eliminate_duplicates: true
                 max_tries: 10
-                n_offsprings: 10
+                n_offsprings: 100
                 pop_size: 1000
                 termination_generation: 250
                 weights:
@@ -312,7 +323,7 @@ properties:
                 examples:
                 -   eliminate_duplicates: true
                     max_tries: 10
-                    n_offsprings: 10
+                    n_offsprings: 100
                     pop_size: 1000
                     termination_generation: 250
                     weights:
@@ -341,7 +352,7 @@ properties:
                         default: 0
                         description: An explanation about the purpose of this instance.
                         examples:
-                        - 10
+                        - 100
                         title: The n_offsprings schema
                         type: integer
                     pop_size:
