@@ -118,7 +118,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 200M
+          memory: 300M
 
   nginx:
     build: ./nginx
