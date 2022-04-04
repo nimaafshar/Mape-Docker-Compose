@@ -501,12 +501,12 @@
     "list": []
   },
   "time": {
-    "from": "2022-03-29T14:42:38.886Z",
-    "to": "2022-03-29T15:05:08.275Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "IoT Workload Generator",
   "uid": "p14x3jEnk",
-  "version": 1
+  "version": 2
 }
