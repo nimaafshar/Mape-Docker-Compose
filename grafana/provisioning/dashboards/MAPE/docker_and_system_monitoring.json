@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 893,
   "graphTooltip": 1,
-  "iteration": 1649003556241,
+  "iteration": 1649074259103,
   "links": [],
   "panels": [
     {
@@ -2506,6 +2506,7 @@
       },
       "styles": [
         {
+          "$$hashKey": "object:1145",
           "align": "auto",
           "colorMode": "cell",
           "colors": [
@@ -2516,16 +2517,16 @@
           "decimals": 2,
           "pattern": "/.*/",
           "thresholds": [
-            "80",
-            "90"
+            "0.8",
+            "0.9"
           ],
           "type": "number",
-          "unit": "percent"
+          "unit": "percentunit"
         }
       ],
       "targets": [
         {
-          "expr": "sum(container_memory_usage_bytes{name=~\".+\"}  * 100) by (container_label_com_docker_compose_service)  / sum(container_spec_memory_limit_bytes{name=~\".+\"}) by (container_label_com_docker_compose_service)",
+          "expr": "avg(max(\r\n  container_memory_usage_bytes{name=~\".+\"}\r /\r\n  container_spec_memory_limit_bytes{name=~\".+\"}\r\n) by (container_label_com_docker_compose_service,name)) by (container_label_com_docker_compose_service)",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{container_label_com_docker_compose_service}}",
@@ -2555,6 +2556,112 @@
       "type": "table-old"
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 47
+      },
+      "hiddenSeries": false,
+      "id": 45,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "avg(max(\r\n  container_memory_usage_bytes{name=~\".+\"}\r /\r\n  container_spec_memory_limit_bytes{name=~\".+\"}\r\n) by (container_label_com_docker_compose_service,name)) by (container_label_com_docker_compose_service)",
+          "interval": "",
+          "legendFormat": "{{container_label_com_docker_compose_service}}",
+          "refId": "A"
+        },
+        {
+          "expr": "avg(max(\r\n  container_memory_usage_bytes{container_label_com_docker_compose_service=\"web\"}\r /\r\n  container_spec_memory_limit_bytes{container_label_com_docker_compose_service=\"web\"}\r\n) by (container_label_com_docker_compose_service,name)) by (container_label_com_docker_compose_service)",
+          "hide": true,
+          "interval": "",
+          "legendFormat": "only web",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Service Average Memory Percent",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1044",
+          "format": "percentunit",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1045",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "columns": [
         {
           "text": "Current",
@@ -2575,7 +2682,7 @@
         "h": 10,
         "w": 8,
         "x": 0,
-        "y": 47
+        "y": 55
       },
       "id": 37,
       "links": [],
@@ -2657,7 +2764,7 @@
         "h": 10,
         "w": 8,
         "x": 8,
-        "y": 49
+        "y": 55
       },
       "id": 36,
       "links": [],
@@ -2886,7 +2993,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2917,5 +3024,5 @@
   "timezone": "browser",
   "title": "Docker and system monitoring",
   "uid": "8TmXFdP7k",
-  "version": 4
+  "version": 5
 }
