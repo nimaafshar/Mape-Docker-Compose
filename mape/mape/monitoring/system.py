@@ -39,10 +39,11 @@ class SystemMonitoring(PrometheusMonitoring):
         average memory utilization of the last monitoring interval between 0 and 1
         returns None in case of connection problems or absence of data
         """
-        query: str = 'sum(container_memory_usage_bytes{container_label_com_docker_compose_service="' + \
-                     self._service_name + '"})' + \
-                     '/sum(container_spec_memory_limit_bytes{container_label_com_docker_compose_service="' + \
-                     self._service_name + '"})'
+        query: str = 'avg(max(container_memory_usage_bytes{container_label_com_docker_compose_service="' + \
+                     self._service_name + \
+                     '"}/container_spec_memory_limit_bytes{container_label_com_docker_compose_service="' + \
+                     self._service_name + \
+                     '"}) by (container_label_com_docker_compose_service,name))'
 
         result: Optional[str] = self._query_instant_metric(query)
         return result if result is None else float(result)
