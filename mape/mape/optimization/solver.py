@@ -89,4 +89,12 @@ class EconomicAdaptationProblemSolver:
             W: float
             gamma: float
             p_s, W, gamma = self._choose_on_pareto_front(-1 * objectives, variables)
-            return EconomicAdaptationResults(p_s, W, gamma)
+
+            pi_s: float = (p_s * _lambda) - (self._problem_params.p_i * W) - (n * self._problem_params.p_n * _lambda)
+            pi_a: float = (gamma * self._problem_params.RPM / 1000 * _lambda) - (self._problem_params.H * _lambda) - \
+                          (p_s * _lambda)
+            U: float = (self._problem_params.a * (self._problem_params.gamma_u - gamma) /
+                        (self._problem_params.gamma_u - self._problem_params.gamma_l)) + \
+                       (self._problem_params.b * (self._problem_params.R_u - r) / (
+                               self._problem_params.R_u - self._problem_params.R_l))
+            return EconomicAdaptationResults(p_s, W, gamma, pi_s, pi_a, U)
