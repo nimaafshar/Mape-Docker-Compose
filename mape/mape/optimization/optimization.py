@@ -17,9 +17,6 @@ class EconomicAdaptationProblem(Problem):
         self._lambda: float = _lambda
         self._n: float = n
         self._r: float = r
-        # weights in user satisfaction formula todo: investigate more in paper
-        self._a = 0.5
-        self._b = 0.5
         # p_s doesn't have any bound, so we should feed algorithm
         # a very high number for upper bound and 0 for lower bound
         super().__init__(n_var=3,  # p_s,W,gamma
@@ -39,7 +36,7 @@ class EconomicAdaptationProblem(Problem):
         pi_s = x[:, 0] * self._lambda - self._params.p_i * x[:, 1] - self._n * self._params.p_n * self._lambda
         pi_a = (x[:, 2] * self._params.RPM / 1000) * self._lambda - self._params.H * self._lambda - x[:,
                                                                                                     0] * self._lambda
-        U = self._a * ((self._params.gamma_u - x[:, 2]) / (self._params.gamma_u - self._params.gamma_l)) + self._b * (
+        U = self._params.a * ((self._params.gamma_u - x[:, 2]) / (self._params.gamma_u - self._params.gamma_l)) + self._params.b * (
                 (self._params.R_u - R) / (self._params.R_u - self._params.R_l))
 
         out["F"] = np.column_stack([-1 * pi_s, -1 * pi_a, -1 * U])

@@ -73,3 +73,5 @@ class EconomicAdaptationParameters:
     R_u: int
     d_l: int
     d_u: int
+    a: float = 0.5
+    b: float = 0.5
