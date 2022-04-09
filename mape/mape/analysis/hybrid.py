@@ -45,6 +45,12 @@ class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
                                                'MAPE Economic Analysis suggested W (replicas count)')
         self._ads_per_page: Gauge = Gauge('mape_economic_analysis_ads_count',
                                           'MAPE Economic Analysis suggested gamma (average banners per page)')
+        self._service_profit: Gauge = Gauge('mape_economic_analysis_service_profit',
+                                            'MAPE Economic Analysis optimized pi_s (service profit)')
+        self._app_profit: Gauge = Gauge('mape_economic_analysis_app_profit',
+                                        'MAPE Economic Analysis optimized pi_a (application profit)')
+        self._user_satisfaction: Gauge = Gauge('mape_economic_analysis_user_satisfaction',
+                                               'MAPE Economic Analysis optimized U (user satisfaction)')
 
     def update(self, cycle: int, data: Optional[HybridMonitoringData]) -> Optional[AnalysisData]:
         if data is None:
@@ -72,6 +78,9 @@ class HybridAnalysis(EconomicAnalysis, ThresholdAnalysis):
             self._economic_service_price.set(economic_data.result.p_s)
             self._economic_replicas.set(economic_data.result.W)
             self._ads_per_page.set(economic_data.result.gamma)
+            self._service_profit.set(economic_data.result.pi_s)
+            self._app_profit.set(economic_data.result.pi_a)
+            self._user_satisfaction.set(economic_data.result.U)
         else:
             self._economic_status.state('fail')
         return HybridAnalysisData(success=threshold_data.success, economic=economic_data, threshold=threshold_data)
