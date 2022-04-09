@@ -21,10 +21,16 @@ class EconomicAdaptationResults:
         p_s (float): price per request in request/dollar
         W (float): number of service (backend) replicas
         gamma (float): average number of ad banners per page
+        pi_s (float): service profit
+        pi_a (float): client (application) profit
+        U (float): user satisfaction, between 0 and 1
     """
     p_s: float
     W: float
     gamma: float
+    pi_s: float
+    pi_a: float
+    U: float
 
 
 @dataclass
