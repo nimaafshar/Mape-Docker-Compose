@@ -66,7 +66,7 @@ class HybridPlanning(Planning):
                 else:
                     logger.info(
                         f"economic analysis was not successful. taking threshold planning decision.[cycle:{cycle},replicas:{threshold_decision}]")
-                    return PlanningData(replicate=False, replicas=threshold_decision)
+                    return PlanningData(replicate=True, replicas=threshold_decision)
 
     def update(self, cycle: int, data: Optional[HybridAnalysisData]) -> PlanningData:
         if data is None:
