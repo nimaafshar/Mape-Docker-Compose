@@ -1,0 +1,469 @@
+$id: http://example.com/example.json
+$schema: http://json-schema.org/draft-07/schema
+additionalProperties: true
+default: {}
+description: The root schema comprises the entire JSON document.
+examples:
+-   analysis:
+        threshold:
+            cpu_lower_threshold: 0.2
+            cpu_upper_threshold: 0.8
+    execution:
+        compose_path: ~/Economicmape/docker-compose.yml
+        service_name: web
+    mape:
+        interval: 60
+    monitoring:
+        host: http://206.12.95.98:9090/api/v1/query
+        interval: 1m
+        service_name: web
+    optimization:
+        problem:
+            H: 8.5e-05
+            RPM: 0.7
+            R_l: 45
+            R_u: 200
+            d_l: 15
+            d_u: 21
+            gamma_l: 1
+            gamma_u: 10
+            p_i: 0.000264
+            p_n: 3.5e-06
+        solve:
+            eliminate_duplicates: true
+            max_tries: 10
+            n_offsprings: 100
+            pop_size: 1000
+            termination_generation: 250
+            weights:
+                application: 0.33
+                service: 0.33
+                user: 0.33
+    planning:
+        max_replicas: 20
+        min_replicas: 1
+properties:
+    analysis:
+        $id: '#/properties/analysis'
+        additionalProperties: true
+        default: {}
+        description: An explanation about the purpose of this instance.
+        examples:
+        -   threshold:
+                cpu_lower_threshold: 0.2
+                cpu_upper_threshold: 0.8
+        properties:
+            threshold:
+                $id: '#/properties/analysis/properties/threshold'
+                additionalProperties: true
+                default: {}
+                description: An explanation about the purpose of this instance.
+                examples:
+                -   cpu_lower_threshold: 0.2
+                    cpu_upper_threshold: 0.8
+                properties:
+                    cpu_lower_threshold:
+                        $id: '#/properties/analysis/properties/threshold/properties/cpu_lower_threshold'
+                        default: 0.0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 0.2
+                        title: The cpu_lower_threshold schema
+                        type: number
+                    cpu_upper_threshold:
+                        $id: '#/properties/analysis/properties/threshold/properties/cpu_upper_threshold'
+                        default: 0.0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 0.8
+                        title: The cpu_upper_threshold schema
+                        type: number
+                required:
+                - cpu_upper_threshold
+                - cpu_lower_threshold
+                title: The threshold schema
+                type: object
+        required:
+        - threshold
+        title: The analysis schema
+        type: object
+    execution:
+        $id: '#/properties/execution'
+        additionalProperties: true
+        default: {}
+        description: An explanation about the purpose of this instance.
+        examples:
+        -   compose_path: ~/Economicmape/docker-compose.yml
+            service_name: web
+        properties:
+            compose_path:
+                $id: '#/properties/execution/properties/compose_path'
+                default: ''
+                description: An explanation about the purpose of this instance.
+                examples:
+                - ~/Economicmape/docker-compose.yml
+                title: The compose_path schema
+                type: string
+            service_name:
+                $id: '#/properties/execution/properties/service_name'
+                default: ''
+                description: An explanation about the purpose of this instance.
+                examples:
+                - web
+                title: The service_name schema
+                type: string
+        required:
+        - service_name
+        - compose_path
+        title: The execution schema
+        type: object
+    mape:
+        $id: '#/properties/mape'
+        additionalProperties: true
+        default: {}
+        description: An explanation about the purpose of this instance.
+        examples:
+        -   interval: 60
+        properties:
+            interval:
+                $id: '#/properties/mape/properties/interval'
+                default: 0
+                description: An explanation about the purpose of this instance.
+                examples:
+                - 60
+                title: The interval schema
+                type: integer
+        required:
+        - interval
+        title: The mape schema
+        type: object
+    monitoring:
+        $id: '#/properties/monitoring'
+        additionalProperties: true
+        default: {}
+        description: An explanation about the purpose of this instance.
+        examples:
+        -   host: http://206.12.95.98:9090/api/v1/query
+            interval: 1m
+            service_name: web
+        properties:
+            host:
+                $id: '#/properties/monitoring/properties/host'
+                default: ''
+                description: An explanation about the purpose of this instance.
+                examples:
+                - http://206.12.95.98:9090/api/v1/query
+                title: The host schema
+                type: string
+            interval:
+                $id: '#/properties/monitoring/properties/interval'
+                default: ''
+                description: An explanation about the purpose of this instance.
+                examples:
+                - 1m
+                title: The interval schema
+                type: string
+            service_name:
+                $id: '#/properties/monitoring/properties/service_name'
+                default: ''
+                description: An explanation about the purpose of this instance.
+                examples:
+                - web
+                title: The service_name schema
+                type: string
+        required:
+        - interval
+        - host
+        - service_name
+        title: The monitoring schema
+        type: object
+    optimization:
+        $id: '#/properties/optimization'
+        additionalProperties: true
+        default: {}
+        description: An explanation about the purpose of this instance.
+        examples:
+        -   problem:
+                H: 8.5e-05
+                RPM: 0.7
+                R_l: 45
+                R_u: 200
+                d_l: 15
+                d_u: 21
+                gamma_l: 1
+                gamma_u: 10
+                p_i: 0.000264
+                p_n: 3.5e-06
+            solve:
+                eliminate_duplicates: true
+                max_tries: 10
+                n_offsprings: 100
+                pop_size: 1000
+                termination_generation: 250
+                weights:
+                    application: 0.33
+                    service: 0.33
+                    user: 0.33
+        properties:
+            problem:
+                $id: '#/properties/optimization/properties/problem'
+                additionalProperties: true
+                default: {}
+                description: An explanation about the purpose of this instance.
+                examples:
+                -   H: 8.5e-05
+                    RPM: 0.7
+                    R_l: 45
+                    R_u: 200
+                    d_l: 15
+                    d_u: 21
+                    gamma_l: 1
+                    gamma_u: 10
+                    p_i: 0.000264
+                    p_n: 3.5e-06
+                properties:
+                    H:
+                        $id: '#/properties/optimization/properties/problem/properties/H'
+                        default: 0.0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 8.5e-05
+                        title: The H schema
+                        type: number
+                    RPM:
+                        $id: '#/properties/optimization/properties/problem/properties/RPM'
+                        default: 0.0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 0.7
+                        title: The RPM schema
+                        type: number
+                    R_l:
+                        $id: '#/properties/optimization/properties/problem/properties/R_l'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 45
+                        title: The R_l schema
+                        type: integer
+                    R_u:
+                        $id: '#/properties/optimization/properties/problem/properties/R_u'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 200
+                        title: The R_u schema
+                        type: integer
+                    d_l:
+                        $id: '#/properties/optimization/properties/problem/properties/d_l'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 15
+                        title: The d_l schema
+                        type: integer
+                    d_u:
+                        $id: '#/properties/optimization/properties/problem/properties/d_u'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 21
+                        title: The d_u schema
+                        type: integer
+                    gamma_l:
+                        $id: '#/properties/optimization/properties/problem/properties/gamma_l'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 1
+                        title: The gamma_l schema
+                        type: integer
+                    gamma_u:
+                        $id: '#/properties/optimization/properties/problem/properties/gamma_u'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 10
+                        title: The gamma_u schema
+                        type: integer
+                    p_i:
+                        $id: '#/properties/optimization/properties/problem/properties/p_i'
+                        default: 0.0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 0.000264
+                        title: The p_i schema
+                        type: number
+                    p_n:
+                        $id: '#/properties/optimization/properties/problem/properties/p_n'
+                        default: 0.0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 3.5e-06
+                        title: The p_n schema
+                        type: number
+                required:
+                - p_i
+                - p_n
+                - H
+                - RPM
+                - gamma_l
+                - gamma_u
+                - R_l
+                - R_u
+                - d_l
+                - d_u
+                title: The problem schema
+                type: object
+            solve:
+                $id: '#/properties/optimization/properties/solve'
+                additionalProperties: true
+                default: {}
+                description: An explanation about the purpose of this instance.
+                examples:
+                -   eliminate_duplicates: true
+                    max_tries: 10
+                    n_offsprings: 100
+                    pop_size: 1000
+                    termination_generation: 250
+                    weights:
+                        application: 0.33
+                        service: 0.33
+                        user: 0.33
+                properties:
+                    eliminate_duplicates:
+                        $id: '#/properties/optimization/properties/solve/properties/eliminate_duplicates'
+                        default: false
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - true
+                        title: The eliminate_duplicates schema
+                        type: boolean
+                    max_tries:
+                        $id: '#/properties/optimization/properties/solve/properties/max_tries'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 10
+                        title: The max_tries schema
+                        type: integer
+                    n_offsprings:
+                        $id: '#/properties/optimization/properties/solve/properties/n_offsprings'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 100
+                        title: The n_offsprings schema
+                        type: integer
+                    pop_size:
+                        $id: '#/properties/optimization/properties/solve/properties/pop_size'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 1000
+                        title: The pop_size schema
+                        type: integer
+                    termination_generation:
+                        $id: '#/properties/optimization/properties/solve/properties/termination_generation'
+                        default: 0
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        - 250
+                        title: The termination_generation schema
+                        type: integer
+                    weights:
+                        $id: '#/properties/optimization/properties/solve/properties/weights'
+                        additionalProperties: true
+                        default: {}
+                        description: An explanation about the purpose of this instance.
+                        examples:
+                        -   application: 0.33
+                            service: 0.33
+                            user: 0.33
+                        properties:
+                            application:
+                                $id: '#/properties/optimization/properties/solve/properties/weights/properties/application'
+                                default: 0.0
+                                description: An explanation about the purpose of this
+                                    instance.
+                                examples:
+                                - 0.33
+                                title: The application schema
+                                type: number
+                            service:
+                                $id: '#/properties/optimization/properties/solve/properties/weights/properties/service'
+                                default: 0.0
+                                description: An explanation about the purpose of this
+                                    instance.
+                                examples:
+                                - 0.33
+                                title: The service schema
+                                type: number
+                            user:
+                                $id: '#/properties/optimization/properties/solve/properties/weights/properties/user'
+                                default: 0.0
+                                description: An explanation about the purpose of this
+                                    instance.
+                                examples:
+                                - 0.33
+                                title: The user schema
+                                type: number
+                        required:
+                        - application
+                        - service
+                        - user
+                        title: The weights schema
+                        type: object
+                required:
+                - pop_size
+                - n_offsprings
+                - eliminate_duplicates
+                - termination_generation
+                - max_tries
+                - weights
+                title: The solve schema
+                type: object
+        required:
+        - problem
+        - solve
+        title: The optimization schema
+        type: object
+    planning:
+        $id: '#/properties/planning'
+        additionalProperties: true
+        default: {}
+        description: An explanation about the purpose of this instance.
+        examples:
+        -   max_replicas: 20
+            min_replicas: 1
+        properties:
+            max_replicas:
+                $id: '#/properties/planning/properties/max_replicas'
+                default: 0
+                description: An explanation about the purpose of this instance.
+                examples:
+                - 20
+                title: The max_replicas schema
+                type: integer
+            min_replicas:
+                $id: '#/properties/planning/properties/min_replicas'
+                default: 0
+                description: An explanation about the purpose of this instance.
+                examples:
+                - 1
+                title: The min_replicas schema
+                type: integer
+        required:
+        - min_replicas
+        - max_replicas
+        title: The planning schema
+        type: object
+required:
+- optimization
+- monitoring
+- analysis
+- planning
+- execution
+- mape
+title: The root schema
+type: object

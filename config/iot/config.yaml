@@ -1,0 +1,63 @@
+wait:
+  start: 10
+  end: 12
+
+sensors:
+  - type: temp
+    interval: 1.0
+  - type: device
+    mean: 5.0
+    sigma: 1.0
+  - type: gps
+    interval: 2.0
+  - type: asd
+    sps: 5
+  - type: camera
+    fps: 15
+    bitrate: 50000
+
+metrics:
+  method: "prometheus"
+
+
+schedule:
+  - sensors: 10
+    time: 60
+  - sensors: 50
+    time: 60
+  - sensors: 80
+    time: 60
+  - sensors: 20
+    time: 60
+  - sensors: 60
+    time: 60
+  - sensors: 90
+    time: 60
+  - sensors: 100
+    time: 60
+  - sensors: 70
+    time: 60
+  - sensors: 50
+    time: 60
+  - sensors: 80
+    time: 60
+  - sensors: 100
+    time: 60
+  - sensors: 10
+    time: 60
+  - sensors: 30
+    time: 50
+  - sensors: 60
+    time: 60
+  - sensors: 90
+    time: 60
+  - sensors: 70
+    time: 60
+  - sensors: 100
+    time: 60
+  - sensors: 80
+    time: 60
+  - sensors: 50
+    time: 60
+  - sensors: 15
+    time: 60
