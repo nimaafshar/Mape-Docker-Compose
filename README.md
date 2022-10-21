@@ -1,17 +1,58 @@
-# Economic Adaption in MAPE
+# Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud : A Container-Based Implementation
+### An implementation of the paper [Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud](./res/TSC2017.pdf) by *Marios Fokaefs*, *Cornel Barna* and *Marin Litoiu*.
 
-##### A MAPE framework implementation of Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud
+![diagram](./res/mape_diagram.png)
 
-this is an implementation of the paper [Multi-Objective Economic Adaptation for Service
-Ecosystems on the Cloud](TSC2017.pdf) by *Marios Fokaefs*, *Cornel Barna* and *Marin Litoiu*.
+
+## What is the MAPE framework?
+
+The MAPE framework, initially proposed by IBM in the paper "An architectural blueprint for autonomic computing" [^mape],
+
+Each of the four components can be implemented differently depending on the purpose of the system.
+However, in the monitoring stage, we usually fetch measurements and insights from the system.
+In the analysis stage, we use that data to give the owner some warnings or analyze which parts of the system are not working as expected.
+In the planning stage, we make some decisions based on the outputs of the previous stage. These decisions are changes in some aspects of the system to get it back to the working state with expected performance.
+Finally, in the execution stage, we apply those decisions to the system.
+These stages run periodically (for example, every hour or every minute)
+to keep the system running and high-performing through environmental changes.
+
 
 ## What's MAPE framework
 
-MAPE framework has 4 components of **M**onitoring, **A**nalysis, **P**lanning and **E**xecution and it is used to monitor and enhance software systems periodically. each of the four components can be implemented differently depending on the purpose of the system but usually in monitoring phase we get some measurements and insights from the system, in the analysis phase we use that data to give the owner some warnings or change some aspects of the system in order for it to work correctly. in the planning phase we make some decisions based on the pervious data for the system and in the final phase we apply those decisions to the system. and this phases run periodically (for example every hour) to keep up with the environment.
+MAPE framework (initially proposed by IBM in 
+[An Architectural Blueprint For Autonomic Computing](https://www.semanticscholar.org/paper/An-architectural-blueprint-for-autonomic-computing-Sinreich/47c37d43f43e2be57f6f2bc668979f784911e953)) 
+has four components (stages) named **Monitoring**, **Analysis**, **Planning**, and **Execution**.
+It is used to monitor and enhance software systems periodically.
+Each of the four components can be implemented differently depending on the purpose of the system.
+However, usually, in the monitoring stage, we fetch some measurements and insights from the system.
+in the analysis stage, we use that data to give the owner some warnings or analyze which parts of the system are not working as expected.
+In the planning stage, we make some decisions based on the outputs of the previous stage. These decisions are specific changes about some ascpects of the system in order for it to work correctly.
+Finally, in the execution stage, we apply those decisions to the system.
+These stages run periodically (for example, every hour or every minute)
+to keep the system's performance high through environmental changes.
 
-## How this implementations works
 
-![diagram](diagram.jpg)
+## How Our implementations works
+
+How Our implementations works
+In our case, the example backend software is a simple Flask web application. It validates and processes generated IoT data from the workload generator and stores them in a MongoDB database.
+Each replica of this backend runs in a docker container.
+We can take two approaches to implementing different components of the MAPE framework. 
+The first approach, which is implemented [here](https://github.com/Vlaquit/EASE-MAPE-System), uses [Docker stats](https://docs.docker.com/engine/reference/commandline/stats/) to monitor CPU, network, and memory usage of docker containers running the application. In this approach, the analysis stage is called threshold analysis. It determines if each resource's usage has reached a certain threshold. The Planning stage decides to add or remove one replica 
+based on the data from the previous stage. Finally, the execution phase applies this decision.
+
+The implemented paper takes an economical approach to the problem. Supposing that we have these stakeholders: 
+- a cloud provider that provides infrastructure for backend services.
+- a service provider that owns the backend services.
+- an application provider that owns the front-end software.
+- end users of the application.
+
+We are trying to maximize the profit for all stakeholders while preserving the system's performance during sudden traffic changes. (end user's profit defines their satisfaction.)
+
+The workload generator software sends different loads of requests to the backend service. The number of concurrent sensors working determines the load. The workload generator also sends some metrics to Prometheus. These metrics contain the number of concurrent users, total requests sent, average response time, average data payload, and arrival rate of the requests.
+
+In the monitoring stage, we fetch the metrics plus some system metrics from the cadvisor from Prometheus. In the
+
 
 in our case the software is a simple Flask web application that calculates pi up to given number of digits and it is running as one or more [docker](https://www.docker.com/) containers . we can have 2 approaches to implement different components of the MAPE framework. the first approach which is implemented [here](https://github.com/Vlaquit/EASE-MAPE-System) (and we have forked that as the baseline) uses [Docker stats](https://docs.docker.com/engine/reference/commandline/stats/) to monitor CPU,network and memory usage of docker containers running the application .in the threshold analysis it decides to add or remove one container if usage of each resource had reach a certain threshold. planning and execution phase completed and applied the decision.
 
@@ -75,3 +116,6 @@ sudo docker-compose up
 ```
 
 [monitoring postman collection](https://documenter.getpostman.com/view/16768507/UyrHesw8)
+
+
+[^mape]: :page_facing_up: [An architectural blueprint for autonomic computing](https://www.semanticscholar.org/paper/An-architectural-blueprint-for-autonomic-computing-Sinreich/47c37d43f43e2be57f6f2bc668979f784911e953)
