@@ -1,35 +1,27 @@
 # Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud : A Container-Based Implementation
-### An implementation of the paper [Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud](./res/TSC2017.pdf) by *Marios Fokaefs*, *Cornel Barna* and *Marin Litoiu*.
+
+#### An implementation of the paper [Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud](./res/TSC2017.pdf) [^our] by *Marios Fokaefs*, *Cornel Barna* and *Marin Litoiu*.
 
 ![diagram](./res/mape_diagram.png)
 
 
 ## What is the MAPE framework?
 
-The MAPE framework, initially proposed by IBM in the paper "An architectural blueprint for autonomic computing" [^mape],
+The MAPE framework, initially proposed by IBM in the paper "An architectural blueprint for autonomic computing" [^mape], has four components named **Monitoring**, 
+**Analysis**,
+**Planning**, and 
+**Execution** .This framework is used to monitor and enhance software systems periodically. Each of the four components can be implemented differently depending on the purpose of the system. However, in the monitoring stage, we usually fetch measurements and insights from the system. In the analysis stage, we use that data to give the owner some warnings or analyze which parts of the system are not working as expected. In the planning stage, we make some decisions based on the outputs of the previous stage. These decisions are changes in some aspects of the system to get it back to the working state with expected performance. Finally, in the execution stage, we apply those decisions to the system. These stages form the MAPE cycle, which runs periodically (for example, every hour or every minute) to keep the system running and high-performing through environmental changes.
 
-Each of the four components can be implemented differently depending on the purpose of the system.
-However, in the monitoring stage, we usually fetch measurements and insights from the system.
-In the analysis stage, we use that data to give the owner some warnings or analyze which parts of the system are not working as expected.
-In the planning stage, we make some decisions based on the outputs of the previous stage. These decisions are changes in some aspects of the system to get it back to the working state with expected performance.
-Finally, in the execution stage, we apply those decisions to the system.
-These stages run periodically (for example, every hour or every minute)
-to keep the system running and high-performing through environmental changes.
+## Using MAPE To Achieve Economic Goals
 
-
-## What's MAPE framework
-
-MAPE framework (initially proposed by IBM in 
-[An Architectural Blueprint For Autonomic Computing](https://www.semanticscholar.org/paper/An-architectural-blueprint-for-autonomic-computing-Sinreich/47c37d43f43e2be57f6f2bc668979f784911e953)) 
-has four components (stages) named **Monitoring**, **Analysis**, **Planning**, and **Execution**.
-It is used to monitor and enhance software systems periodically.
-Each of the four components can be implemented differently depending on the purpose of the system.
-However, usually, in the monitoring stage, we fetch some measurements and insights from the system.
-in the analysis stage, we use that data to give the owner some warnings or analyze which parts of the system are not working as expected.
-In the planning stage, we make some decisions based on the outputs of the previous stage. These decisions are specific changes about some ascpects of the system in order for it to work correctly.
-Finally, in the execution stage, we apply those decisions to the system.
-These stages run periodically (for example, every hour or every minute)
-to keep the system's performance high through environmental changes.
+The implemented paper uses the MAPE framework to reach an economic purpose. Supposing that we have these stakeholders:
+- a cloud provider that provides infrastructure for backend services.
+- a service provider that owns the backend services.
+- an application provider that owns the front-end software.
+- end users of the application.
+- 
+We are trying to maximize each stakeholder's profit * while preserving the system's performance during sudden load changes.
+<small>* The end user's profit defines as the user's satisfaction. </small>
 
 
 ## How Our implementations works
@@ -117,5 +109,6 @@ sudo docker-compose up
 
 [monitoring postman collection](https://documenter.getpostman.com/view/16768507/UyrHesw8)
 
+[^our]: :page_facing_up: [Multi-Objective Economic Adaptation for Service Ecosystems on the Cloud](./res/TSC2017.pdf)
 
 [^mape]: :page_facing_up: [An architectural blueprint for autonomic computing](https://www.semanticscholar.org/paper/An-architectural-blueprint-for-autonomic-computing-Sinreich/47c37d43f43e2be57f6f2bc668979f784911e953)
